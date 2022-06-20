@@ -1,0 +1,49 @@
+.area-text {
+    width: 100%;
+}
+
+.html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
+.keys {
+    padding: 10px;
+    width: 50px;
+    font-size: 30px;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.backspace {
+    width: auto;
+}
+
+.under-textarea-div {
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    align-items: center;
+}
+
+.first {
+    padding: 5px;
+}
+
+.caps {
+    width: auto;
+}
+
+.enter {
+    width: 170px;
+}
+
+.keyboard {
+    width: 100%;
+    text-align: center;
+}
+
+.tab {
+    width: 150px;
+}
