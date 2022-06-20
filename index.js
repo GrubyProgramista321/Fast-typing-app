@@ -1,22 +1,16 @@
-
-console.log($("#text-keyboard"))
 const pattern = ['A', 'a', 'Ą', 'ą', 'B', 'b', 'C', 'c', 'Ć', 'ć', 'D', 'd', 'E', 'e', 'Ę', 'ę', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'J', 'j', 'K', 'k', 'L', 'l', 'Ł', 'ł', 'M', 'm', 'N', 'n', 'Ń', 'ń', 'O', 'o', 'Ó', 'ó', 'P', 'p', 'R', 'r', 'S', 's', 'Ś', 'ś', 'T', 't', 'U', 'u', 'W', 'w', 'Y', 'y', 'Z', 'z', 'Ź', 'ź', 'Ż', 'ż', "q", "Q", "X", "x", "!", ',', ".", "[", "]", "|"];
 var listOfValue = []
 var listOfLetters = []
 var text = "ale to jest fajne"
 var textDouble = text
+var jasienieznam = 1
 var newText = ""
+var shiftClcked = true 
 for(var i = 0; i < text.length; i++) {
-    newText += `<letter>${text[i]}</letter>`
-}
-console.log(newText)
-String.prototype.replaceAt = function(index, replacement) {
-    return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+    newText += `<span class="letter">${text[i]}</span>`
 }
 $(document).ready(function () {
     $("#word-inner").html(newText)
-    console.log($("letter"))
-    var shiftClcked = true
     $(".keys").click(function () {
         $("#text-keyboard").focus()
         $(this).css("background-color", "green")
@@ -73,10 +67,15 @@ $(document).ready(function () {
     }
     console.log("lista liter: ", listOfLetters)
     console.log("lista value: ", listOfValue)
-    $(document).on("keydown", function (e) {
+    $(document).on("keydown", function (e) { 
+        for(var i = 0; i < $(".letter").length; i++) {
+            $(".letter")[i].style.color = "black"
+        }
+        if ((e.key == "Enter")) {
+            e.preventDefault()
+        }
         for (var i = 0; i < listOfLetters.length; i++) {
             if (listOfLetters[i].value == e.key || listOfLetters[i].value.toUpperCase() == e.key.toUpperCase() ) {
-                console.log(e.key)
                 listOfLetters[i].style.backgroundColor = "green"
             }
         }
@@ -84,41 +83,39 @@ $(document).ready(function () {
     $(document).on("keyup", function (e) {
         for (var i = 0; i < listOfLetters.length; i++) {
             if (listOfLetters[i].value == e.key || listOfLetters[i].value.toUpperCase() == e.key.toUpperCase() ) {
-                console.log(e.key)
                 listOfLetters[i].style.backgroundColor = "white"
             }
         }
     })
     function checkWord(valueUser,word) {
-        for(var i = 0; i < word.length; i++) {
+        for(var i = 0; i < $("#text-keyboard").val().length; i++) {
             if (typeof(valueUser[i]) == "undefined") {
-                console.log(i)
-                console.log("fajnie")
                 break
             }
             else {
                 if (valueUser[i] == word[i] ) {
-                // console.log()
                 word = word.replace(word[i], "!") 
                 console.log(word)
                 }
+                else if (valueUser[x] != word[x]) {
+                    word = word.replace(word[i], "@")
+                }
             }
         }
-        for(var x = 0; x < word.length; x++) {
-            console.log(valueUser)
-            if (typeof(valueUser[x]) == "undefined") {
-                break
-            }
+        for (var x = 0; x < $("#text-keyboard").val().length; x++) {
             if (word[x] == "!") {
-                console.log("nie", valueUser)
-                var index = textDouble.indexOf(valueUser[x])
-                console.log("index z textDouble to: ", index)
-                textDouble.replaceAt(index, `<span class="green">${valueUser[x]}</span>`)
+                $(".letter")[x].style.color = "green"
             }
-            console.log(textDouble)
-        }
+            else {
+            try {
+                $(".letter")[x].style.color = "red"
+            }
+            catch (error) {   
+            }
+            }
     }
-    $("#text-keyboard").on("input",function() {
-        checkWord($("#text-keyboard").val(), text)
-    })
+}
+$("#text-keyboard").on("input",function() {
+    checkWord($("#text-keyboard").val(), text)
+})
 })
