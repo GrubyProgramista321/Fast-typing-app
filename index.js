@@ -79,13 +79,21 @@ var listOfLetters = [];
 var text = "ale to jest fajne";
 var letters = text.split(" ");
 var textDouble = text;
+console.log(letters)
 var jasienieznam = 1;
 var newText = "";
+var nawet = 0;
 var shiftClcked = true;
+var currnetWordTak;
 for (var i = 0; i < letters.length; i++) {
   newText += `<span class="wordsiema" id="word">${letters[i]}</span>`;
 }
 $(document).ready(function () {
+    function currnetWord(wordNumber) {
+        currnetWordTak = letters[wordNumber]
+        console.log("currnetWordTak: ", currnetWordTak)
+        return currnetWordTak
+    }
   $("#word-inner").html(newText);
   for (var x = 0; x < $(".wordsiema").length; x++) {
     var siemaaaa = "";
@@ -101,9 +109,6 @@ $(document).ready(function () {
       $("letter")[x].style.color = "black";
     }
     $(this).css("background-color", "green");
-    setTimeout(function () {
-      $(this).css("background-color", "red");
-    }, 100);
     if (pattern.includes($(this).val())) {
       $("#text-keyboard")[0].value += $(this).val();
     } else {
@@ -172,31 +177,57 @@ $(document).ready(function () {
       }
     }
   });
+  function changeWordValue() {
+    nawet++
+    console.log("nawet: ", nawet)
+    currnetWord(nawet)
+  }
   function checkWord(valueUser, word) {
     for (var i = 0; i < $("#text-keyboard").val().length; i++) {
       if (typeof valueUser[i] == "undefined") {
         break;
       } else {
+        console.log(word)
         if (valueUser[i] == word[i]) {
           word = word.replace(word[i], "!");
         } else if (valueUser[x] != word[x]) {
           word = word.replace(word[i], "@");
         }
       }
-    }
-    for (var x = 0; x < $("#text-keyboard").val().length; x++) {
-      if (word[x] == "!") {
-        $("letter")[x].style.color = "green";
-      } else {
-        try {
-          $("letter")[x].style.color = "red";
-        } catch (error) {}
+      console.log(word)
       }
+      for (var x = 0; x < $("#text-keyboard").val().length; x++) {
+        if (word[x] == "!") {
+          $("letter")[x].style.color = "green";
+        } else {
+          try {
+            $("letter")[x].style.color = "red";
+          } catch (error) {}
+        }
+      }
+      console.log(word.length)
+      console.log(valueUser.length)
+      if (word.length == valueUser.length) {
+        document.getElementById("text-keyboard").addEventListener("keydown", function(e) {
+            if (e.code == "Space") {
+                e.preventDefault()
+                let lengthPoints = 0
+                for(var p = 0; p < word.length; p++) {
+                    if (word[p] == "!") {
+                        lengthPoints++
+                        console.log(lengthPoints)
+                    }
+                }
+                if (lengthPoints == word.length) {
+                  console.log("wszystko dobrze wariacie")
+                  changeWordValue()
+                  document.getElementById("text-keyboard").value = ""
+                }
+            }
+        })
     }
   }
-  function checkWordInput() {}
   $("#text-keyboard").on("input", function () {
-    checkWordInput();
-    checkWord($("#text-keyboard").val(), text);
+    checkWord($("#text-keyboard").val(),currnetWord(nawet));
   });
 });
