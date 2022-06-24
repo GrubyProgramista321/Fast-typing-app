@@ -2,14 +2,45 @@
   width: 100%;
 }
 
+
+/* 
+letters {
+  color: white;
+} */
+
 .html,
 body {
   height: 100%;
   width: 100%;
+  background-color: black;
 }
-.word-inner {
+
+.word {
+  display: flex;
+}
+
+.additional-letters {
+  color: rgb(138, 0, 0);
+}
+
+.keys:active {
+  background-color: green;
+}
+
+.costam {
+  display: flex;
+}
+
+.letters {
+  color: white;
+}
+
+#word-inner {
+  font-size: 40px;
   transition: color 0.4s;
+  display: flex;
 }
+
 .keys {
   padding: 10px;
   width: 50px;
@@ -28,9 +59,11 @@ body {
   align-items: flex-end;
   align-items: center;
 }
+
 #word {
   margin: 10px;
 }
+
 .first {
   padding: 5px;
 }
