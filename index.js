@@ -201,11 +201,11 @@ $(document).ready(function () {
         $(".word")[indexOfWord].ariaValue = `${superancko}`
         indexOfWord++
     }
-    function PrviousWord() {
+    function PrviousWord(condition) {
         console.log($(".word")[indexOfWord].previousElementSibling)
-        if ($(".word")[indexOfWord].previousElementSibling != null) {
+        if ($(".word")[indexOfWord].previousElementSibling != null && condition) {
             console.log($(".word")[indexOfWord].previousElementSibling.ariaValue)
-            document.getElementById("text-keyboard").value = $(".word")[indexOfWord].previousElementSibling.ariaValue.split(" ")[0]
+            document.getElementById("text-keyboard").value = $(".word")[indexOfWord].previousElementSibling.ariaValue
             indexOfWord--
         }
     }
@@ -246,15 +246,21 @@ $(document).ready(function () {
             }
         }
     }
-
+    function canBackspace() {
+        if ($(".word")[indexOfWord - 1].ariaLabel != "correct") {
+            return true
+        }
+        else {
+            return false
+        }
+    }
     function checkWord(valueUser, word) {
         let goodLetters = 0;
-
         console.log("tak", childrenElements)
         var parent = $(".word")[indexOfWord]
         var childrenElements = parent.querySelectorAll(".costam")
         try {
-            childrenElements.children = ''
+            $(childrenElements).remove()
         }
         catch (error) {
         }
@@ -290,7 +296,7 @@ $(document).ready(function () {
         if (e.code == "Backspace") {
             if ($("#text-keyboard").val() <= 0) {
                 e.preventDefault()
-                PrviousWord()
+                PrviousWord(canBackspace())
             }
         }
     })
