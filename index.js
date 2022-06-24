@@ -174,7 +174,6 @@ $(document).ready(function () {
     function addLettersColored(userInput) {
         let fajnie = userInput.substring(currnetWord2o().length)
         let additionalLetters = ""
-        additionalLetters += "<div class='costam'>"
         for (let i = 0; i <= fajnie.length; i++) {
             if (typeof (fajnie[i]) == "undefined") {
                 break;
@@ -182,7 +181,6 @@ $(document).ready(function () {
             let lettersAppend = `<letters class="additional-letters">${fajnie[i]}</letters>`
             additionalLetters += lettersAppend
         }
-        additionalLetters += "</div>"
         console.log(additionalLetters)
         $(".word")[indexOfWord].innerHTML += additionalLetters
         // console.log(additionalLetters)
@@ -201,9 +199,50 @@ $(document).ready(function () {
         $(".word")[indexOfWord].ariaValue = `${superancko}`
         indexOfWord++
     }
-    function PrviousWord(condition) {
-        console.log($(".word")[indexOfWord].previousElementSibling)
-        if ($(".word")[indexOfWord].previousElementSibling != null && condition) {
+    function showCurrsorBlinking(valueFromUser) {
+        console.log(valueFromUser.length)
+        // console.log($(".word")[indexOfWord].children[valueFromUser.length - 1].getBoundingClientRect())
+        if (valueFromUser.length - 1 == -1) {
+            let currnetLetterWidth = $(".word")[indexOfWord].children[valueFromUser.length].getBoundingClientRect().width
+            let currnetLetterTop = $(".word")[indexOfWord].children[valueFromUser.length].getBoundingClientRect().top
+            let currnetLetterBottom = $(".word")[indexOfWord].children[valueFromUser.length].getBoundingClientRect().bottom;
+            let currnetLetterLeft = $(".word")[indexOfWord].children[valueFromUser.length].getBoundingClientRect().left;
+            let currnetLetterRight = $(".word")[indexOfWord].children[valueFromUser.length].getBoundingClientRect().right;
+            $(".blinkingCurrsor").css("top", currnetLetterTop)
+            $(".blinkingCurrsor").css("bottom", currnetLetterBottom)
+            $(".blinkingCurrsor").css("left", currnetLetterLeft)
+            $(".blinkingCurrsor").css("rigth", currnetLetterRight)
+            console.log("no i koniec")
+        }
+        else if (valueFromUser.length - 1 == 0 && SpaceClicked) {
+            console.log("fajnie")
+            let currnetLetterWidth = $(".word")[indexOfWord].children[valueFromUser.length - 1].getBoundingClientRect().width
+            let currnetLetterTop = $(".word")[indexOfWord].children[valueFromUser.length].getBoundingClientRect().top
+            let currnetLetterBottom = $(".word")[indexOfWord].children[valueFromUser.length].getBoundingClientRect().bottom;
+            let currnetLetterLeft = $(".word")[indexOfWord].children[valueFromUser.length].getBoundingClientRect().left;
+            let currnetLetterRight = $(".word")[indexOfWord].children[valueFromUser.length].getBoundingClientRect().right;
+            $(".blinkingCurrsor").css("top", currnetLetterTop)
+            $(".blinkingCurrsor").css("bottom", currnetLetterBottom)
+            $(".blinkingCurrsor").css("left", currnetLetterLeft - currnetLetterWidth)
+            $(".blinkingCurrsor").css("rigth", currnetLetterRight)
+        }
+        else {
+            let currnetLetterWidth = $(".word")[indexOfWord].children[valueFromUser.length - 1].getBoundingClientRect().width
+            let currnetLetterTop = $(".word")[indexOfWord].children[valueFromUser.length - 1].getBoundingClientRect().top
+            let currnetLetterBottom = $(".word")[indexOfWord].children[valueFromUser.length - 1].getBoundingClientRect().bottom;
+            let currnetLetterLeft = $(".word")[indexOfWord].children[valueFromUser.length - 1].getBoundingClientRect().left;
+            let currnetLetterRight = $(".word")[indexOfWord].children[valueFromUser.length - 1].getBoundingClientRect().right;
+            // console.log("literlka", $(".word")[indexOfWord].children[valueFromUser.length], currnetLetter)
+            $(".blinkingCurrsor").css("top", currnetLetterTop)
+            $(".blinkingCurrsor").css("bottom", currnetLetterBottom)
+            $(".blinkingCurrsor").css("left", currnetLetterLeft + currnetLetterWidth)
+            $(".blinkingCurrsor").css("rigth", currnetLetterRight)
+        }
+        console.log("uservalue = ", valueFromUser.length)
+    }
+    function PrviousWord() {
+        console.log("sieeweeqweqw")
+        if ($(".word")[indexOfWord].previousElementSibling != null) {
             console.log($(".word")[indexOfWord].previousElementSibling.ariaValue)
             document.getElementById("text-keyboard").value = $(".word")[indexOfWord].previousElementSibling.ariaValue
             indexOfWord--
@@ -224,11 +263,11 @@ $(document).ready(function () {
         console.log("word.length: ", wordWithColors.length)
         console.log("userInput.length", document.getElementById("text-keyboard").value.length)
         if (validPoints === wordWithColors.length && validPoints === document.getElementById("text-keyboard").value.length) {
-            $(".word")[indexOfWord].ariaLabel = "correct"
-            console.log($(".word")[indexOfWord].ariaLabel)
+            $(".word")[indexOfWord].ariaSiema = "correct"
+            console.log($(".word")[indexOfWord].aria)
         }
         else {
-            $(".word")[indexOfWord].ariaLabel = ""
+            $(".word")[indexOfWord].ariaSiema = ""
         }
     }
 
@@ -246,8 +285,10 @@ $(document).ready(function () {
             }
         }
     }
+    console.log($("#word"))
     function canBackspace() {
-        if ($(".word")[indexOfWord - 1].ariaLabel != "correct") {
+        console.log(indexOfWord - 1)
+        if ($(".word")[indexOfWord - 1].ariaSiema != "correct") {
             return true
         }
         else {
@@ -258,7 +299,7 @@ $(document).ready(function () {
         let goodLetters = 0;
         console.log("tak", childrenElements)
         var parent = $(".word")[indexOfWord]
-        var childrenElements = parent.querySelectorAll(".costam")
+        var childrenElements = parent.querySelectorAll(".additional-letters")
         try {
             $(childrenElements).remove()
         }
@@ -285,19 +326,36 @@ $(document).ready(function () {
 
     $("#text-keyboard").on("input", function () {
         checkWord($("#text-keyboard").val(), currnetWord2o());
+        showCurrsorBlinking($("#text-keyboard").val())
     });
     $("#text-keyboard").on("keydown", function (e) {
         if (e.code === "Space") {
+            SpaceClicked = true
             nextWord()
             checkWordValid(currnetWordColor)
             document.getElementById("text-keyboard").value = ""
             e.preventDefault()
+            showCurrsorBlinking($("#text-keyboard").val())
+            SpaceClicked = false
         }
         if (e.code == "Backspace") {
             if ($("#text-keyboard").val() <= 0) {
                 e.preventDefault()
-                PrviousWord(canBackspace())
+                if (canBackspace()) {
+                    PrviousWord()
+                    showCurrsorBlinking($("#text-keyboard").val())
+                }
+                // if (canBackspace()) {
+                //     console.log(":yea")
+                //     showCurrsorBlinking($("#text-keyboard").val)
+                // }
             }
         }
     })
+    function Watch(time) {
+        let seconds = 0
+        setInterval(function () {
+            let secondsHTML = $("#seconds")
+        }, 1000)
+    }
 });

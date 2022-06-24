@@ -2,12 +2,6 @@
   width: 100%;
 }
 
-
-/* 
-letters {
-  color: white;
-} */
-
 .html,
 body {
   height: 100%;
@@ -17,6 +11,14 @@ body {
 
 .word {
   display: flex;
+}
+
+.blinkingCurrsor {
+  width: 3px;
+  height: 60px;
+  background-color: red;
+  position: absolute;
+  transition: all 0.15s;
 }
 
 .additional-letters {
