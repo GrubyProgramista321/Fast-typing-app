@@ -75,22 +75,23 @@ const pattern = [
     "|",
 ];
 var listOfLetters = []; // nasze literki / wartosci z literek
-var text = "szedl sobie ziomek co mial bardzo duzo poziomek ale niestety spadl i sie zapadl w depresje ";
+var text = "The club isn't the best place to find a lover So the bar is where I go Me and my friends at the table doing shots Drinking fast and then we talk slow And you come over and start up a conversation with just me And trust me I'll give it a chance now Take my hand, stop, put Van the Man on the jukebox And then we start to dance, and now I'm singing like"
 var letters = text.split(" "); // lista z poszczegółnymi słowami
 var textDouble = text; // duplikat textu
 var newText = ""; // text gdzie dodajemy nasze słowa
-var indexOfWord = 0; // index naszego textu
+var indexOfWord = 0; // index słowa naszego textu
 var shiftClcked = true; // shift klikniety na klaiwatórze ekranowej (umieszczonej na stronie)
 var currnetWord = letters[indexOfWord] // słowo które weryfikuje program
 var currnetWordColor = currnetWord; // słowo które zmienia swoją wartosc na ! i @ aby wprowadzic kolory
 var SpaceClicked = false // czy spacja kliknieta
+var niewiem;
 for (var i = 0; i < letters.length; i++) {
     newText += `<span class="word" id="word">${letters[i]}</span>`;
 }
 $(document).ready(function () {
     $("#word-inner").html(newText);
     for (var x = 0; x < $(".word").length; x++) {
-        var siemaaaa = "";
+        let siemaaaa = "";
         for (let i = 0; i < $(".word")[x].innerHTML.length; i++) {
             siemaaaa += `<letter class="letters">${$(".word")[x].innerHTML[i]}</letter>`;
         }
@@ -100,17 +101,17 @@ $(document).ready(function () {
 
         $("#text-keyboard").focus();
         $("letter").css("color", "black");
-        for (var x = 0; x < $("letter").length; x++) {
+        for (let x = 0; x < $("letter").length; x++) {
             $("letter")[x].style.color = "white";
         }
         if (pattern.includes($(this).val())) {
             $("#text-keyboard")[0].value += $(this).val();
         } else {
             if ($(this).val() == "Backspace") {
-                var lastletter = $("#text-keyboard")[0].value.substring(
+                let lastletter = $("#text-keyboard")[0].value.substring(
                     $("#text-keyboard")[0].value.length - 1
                 );
-                var costam = $("#text-keyboard")[0].value.replace(lastletter, "");
+                let costam = $("#text-keyboard")[0].value.replace(lastletter, "");
                 $("#text-keyboard")[0].value = costam;
             }
             if ($(this).val() == "shift") {
@@ -170,7 +171,39 @@ $(document).ready(function () {
             }
         }
     });
-
+    function numberOFWords() {
+        let GoodWordsCounter = 0
+        for (let i = 0; i < $(".word").length; i++) {
+            console.log($(".word")[i].ariaSiema)
+            if ($(".word")[i].ariaSiema == "correct") {
+                GoodWordsCounter++
+            }
+        }
+        let timeToDivide = niewiem / 60
+        console.log(niewiem)
+        let result = GoodWordsCounter / timeToDivide
+        return result
+    }
+    function endOfGame() {
+        $("body").append(`<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h1 id="numberOfWords">${numberOFWords().toString()}</h1> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>`)
+        $('#exampleModal').modal('show')
+    }
     function addLettersColored(userInput) {
         let fajnie = userInput.substring(currnetWord2o().length)
         let additionalLetters = ""
@@ -181,18 +214,15 @@ $(document).ready(function () {
             let lettersAppend = `<letters class="additional-letters">${fajnie[i]}</letters>`
             additionalLetters += lettersAppend
         }
-        console.log(additionalLetters)
         $(".word")[indexOfWord].innerHTML += additionalLetters
         // console.log(additionalLetters)
         let listOfAdditionalLetters = []
         let parent = $(".word")[indexOfWord].children
         for (let y = 0; y < parent.length; y++) {
-            console.log(parent[y].className)
             if (parent[y].className == "additional-letters") {
                 listOfAdditionalLetters.push(parent[y])
             }
         }
-        console.log(listOfAdditionalLetters)
     }
     function nextWord() {
         let superancko = $("#text-keyboard").val()
@@ -238,12 +268,9 @@ $(document).ready(function () {
             $(".blinkingCurrsor").css("left", currnetLetterLeft + currnetLetterWidth)
             $(".blinkingCurrsor").css("rigth", currnetLetterRight)
         }
-        console.log("uservalue = ", valueFromUser.length)
     }
     function PrviousWord() {
-        console.log("sieeweeqweqw")
         if ($(".word")[indexOfWord].previousElementSibling != null) {
-            console.log($(".word")[indexOfWord].previousElementSibling.ariaValue)
             document.getElementById("text-keyboard").value = $(".word")[indexOfWord].previousElementSibling.ariaValue
             indexOfWord--
         }
@@ -253,21 +280,22 @@ $(document).ready(function () {
         return currnetWord
     }
     function checkWordValid(wordWithColors) {
+        $(".word")[indexOfWord].ariaSiema = ""
         var validPoints = 0;
         for (let i = 0; i < wordWithColors.length; i++) {
             if (currnetWordColor[i] === "!") {
                 validPoints++
             }
         }
-        console.log("validPoints: ", validPoints)
-        console.log("word.length: ", wordWithColors.length)
-        console.log("userInput.length", document.getElementById("text-keyboard").value.length)
         if (validPoints === wordWithColors.length && validPoints === document.getElementById("text-keyboard").value.length) {
+            console.log("validPoints: ", validPoints)
+            console.log("wordWithColors.length: ", wordWithColors)
+            console.log("Udało sie")
             $(".word")[indexOfWord].ariaSiema = "correct"
-            console.log($(".word")[indexOfWord].aria)
+            console.log($(".word")[indexOfWord].ariaSiema)
         }
         else {
-            $(".word")[indexOfWord].ariaSiema = ""
+            $(".word")[indexOfWord].ariaSiema = "notCorrect"
         }
     }
 
@@ -285,9 +313,7 @@ $(document).ready(function () {
             }
         }
     }
-    console.log($("#word"))
     function canBackspace() {
-        console.log(indexOfWord - 1)
         if ($(".word")[indexOfWord - 1].ariaSiema != "correct") {
             return true
         }
@@ -297,7 +323,6 @@ $(document).ready(function () {
     }
     function checkWord(valueUser, word) {
         let goodLetters = 0;
-        console.log("tak", childrenElements)
         var parent = $(".word")[indexOfWord]
         var childrenElements = parent.querySelectorAll(".additional-letters")
         try {
@@ -321,7 +346,6 @@ $(document).ready(function () {
         }
         changeColor(currnetWordColor)
         checkWordValid(currnetWordColor)
-        console.log(childrenElements)
     }
 
     $("#text-keyboard").on("input", function () {
@@ -330,11 +354,11 @@ $(document).ready(function () {
     });
     $("#text-keyboard").on("keydown", function (e) {
         if (e.code === "Space") {
+            e.preventDefault()
             SpaceClicked = true
             nextWord()
-            checkWordValid(currnetWordColor)
             document.getElementById("text-keyboard").value = ""
-            e.preventDefault()
+            checkWordValid(currnetWordColor)
             showCurrsorBlinking($("#text-keyboard").val())
             SpaceClicked = false
         }
@@ -345,17 +369,66 @@ $(document).ready(function () {
                     PrviousWord()
                     showCurrsorBlinking($("#text-keyboard").val())
                 }
-                // if (canBackspace()) {
-                //     console.log(":yea")
-                //     showCurrsorBlinking($("#text-keyboard").val)
-                // }
             }
         }
     })
     function Watch(time) {
-        let seconds = 0
-        setInterval(function () {
-            let secondsHTML = $("#seconds")
+        var seconds = time
+        niewiem = seconds
+        var secondsHTML = $("#seconds")
+        var minutesHTML = $("#minutes")
+        let isOverMinute = false
+        if (time > 60) {
+            isOverMinute = true
+            var hours = time / 60
+            var superancko = time % 60
+            var hours = parseInt(hours.toString().substring(0, hours.toString().indexOf(".")))
+        }
+        if (isOverMinute) {
+            minutesHTML.html(hours)
+            if (superancko < 10) {
+                secondsHTML.html("0" + superancko)
+            }
+            else {
+                secondsHTML.html(superancko)
+            }
+        }
+        else {
+            minutesHTML.html("0")
+            secondsHTML.html(seconds)
+        }
+        var Tick = setInterval(function () {
+            seconds--
+            // secondsHTML.html("")
+            // minutesHTML.html("")
+            if (isOverMinute) {
+                if (superancko == 0) {
+                    superancko = 60
+                    hours--
+                }
+                minutesHTML.html(hours)
+                superancko--
+                if (superancko < 10) {
+                    secondsHTML.html("0" + superancko)
+                }
+                else {
+                    minutesHTML.html(hours)
+                    secondsHTML.html(superancko)
+                }
+            }
+            else {
+                secondsHTML.html(seconds)
+                if (seconds < 10) {
+                    secondsHTML.html("0" + seconds)
+                }
+            }
+            if (seconds <= 0) {
+                clearInterval(Tick)
+                endOfGame()
+            }
         }, 1000)
     }
+    Watch(15)
+
+    showCurrsorBlinking($("#text-keyboard").val())
 });

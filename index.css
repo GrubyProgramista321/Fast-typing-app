@@ -9,16 +9,16 @@ body {
   background-color: black;
 }
 
-.word {
-  display: flex;
-}
-
 .blinkingCurrsor {
   width: 3px;
-  height: 60px;
+  height: 40px;
   background-color: red;
   position: absolute;
   transition: all 0.15s;
+}
+
+#clock {
+  display: flex;
 }
 
 .additional-letters {
@@ -38,9 +38,21 @@ body {
 }
 
 #word-inner {
-  font-size: 40px;
+  text-align: center;
+  font-size: 30px;
   transition: color 0.4s;
   display: flex;
+  justify-content: center;
+  width: 70%;
+  flex-wrap: wrap;
+  /* padding-left: 2e00px; */
+  /* padding-right: 200px; */
+}
+
+.word-ds {
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
 
 .keys {
@@ -56,14 +68,11 @@ body {
 }
 
 .under-textarea-div {
-  height: 100%;
-  display: flex;
-  align-items: flex-end;
-  align-items: center;
+  width: 100px;
 }
 
 #word {
-  margin: 10px;
+  margin: 5px;
 }
 
 .first {
