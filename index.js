@@ -180,7 +180,8 @@ $(document).ready(function () {
             }
         }
         let timeToDivide = niewiem / 60
-        console.log(niewiem)
+        console.log(GoodWordsCounter)
+        console.log(timeToDivide)
         let result = GoodWordsCounter / timeToDivide
         return result
     }
