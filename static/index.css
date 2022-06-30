@@ -1,5 +1,7 @@
 .area-text {
   width: 100%;
+  opacity: 0;
+  position: absolute;
 }
 
 .html,
@@ -7,12 +9,21 @@ body {
   height: 100%;
   width: 100%;
   background-color: black;
+  scrollbar-width: none;
+}
+
+.wpm-style-div {
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .blinkingCurrsor {
   width: 3px;
   height: 40px;
-  background-color: red;
+  background-color: rgb(255, 123, 0);
   position: absolute;
   transition: all 0.15s;
 }
@@ -44,6 +55,7 @@ body {
   display: flex;
   justify-content: center;
   width: 70%;
+  /* height: ; */
   flex-wrap: wrap;
   /* padding-left: 2e00px; */
   /* padding-right: 200px; */
@@ -52,7 +64,15 @@ body {
 .word-ds {
   display: flex;
   width: 100%;
+  height: 200px;
+  overflow-y: auto;
   justify-content: center;
+  scrollbar-color: black;
+}
+
+.word-ds::-webkit-scrollbar {
+  color: black;
+  width: 0px;
 }
 
 .keys {
@@ -67,11 +87,7 @@ body {
   width: auto;
 }
 
-.under-textarea-div {
-  width: 100px;
-}
-
-#word {
+.word {
   margin: 5px;
 }
 
