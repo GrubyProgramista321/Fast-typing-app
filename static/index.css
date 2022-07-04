@@ -1,6 +1,6 @@
 .area-text {
   width: 100%;
-  opacity: 0;
+  opacity: 1;
   position: absolute;
 }
 
@@ -18,6 +18,9 @@ body {
   display: flex;
   justify-content: space-between;
 }
+.hideCursor {
+  opacity: 0;
+}
 .wpm-style-div {
   width: fit-content;
   display: flex;
@@ -30,6 +33,7 @@ body {
 }
 .blinkingCurrsor {
   width: 3px;
+  opacity: 1;
   height: 40px;
   background-color: rgb(255, 123, 0);
   position: absolute;
@@ -54,6 +58,7 @@ body {
 }
 
 .letters {
+  width: 40px;
   color: rgb(114, 114, 114);
 }
 .clock {
@@ -62,10 +67,11 @@ body {
 #word-inner {
   text-align: center;
   font-size: 30px;
+  overflow: hidden;
   transition: color 0.4s;
   display: flex;
   justify-content: center;
-  width: 40%;
+  width: 70%;
   /* height: ; */
   flex-wrap: wrap;
   /* padding-left: 2e00px; */

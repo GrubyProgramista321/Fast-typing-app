@@ -86,7 +86,8 @@ var currnetWordColor = currnetWord; // słowo które zmienia swoją wartosc na !
 var SpaceClicked = false; // czy spacja kliknieta
 var niewiem;
 var WrittenLetters = 0;
-var time = 30;
+var time = 60;
+var heightOf2Lines;
 var loaded = false;
 var FirstClick = false;
 $(document).ready(function () {
@@ -94,10 +95,13 @@ $(document).ready(function () {
     $.ajax({
       url: "/create_word",
       success: function (result) {
-        text = result;
+        text = result.toLowerCase();
         $(".word-ds").append('<div class="blinkingCurrsor"></div>');
         addWordsToHTML(text);
         showCurrsorBlinking($("#text-keyboard").val());
+        heightOf2Lines =
+          document.getElementById("word").getBoundingClientRect().height * 2;
+        console.log(heightOf2Lines);
         loaded = true;
       },
       error: function () {
@@ -152,6 +156,63 @@ $(document).ready(function () {
     checkWord($("#text-keyboard").val(), currnetWord2o());
     showCurrsorBlinking($("#text-keyboard").val());
   });
+  var line = 0;
+  var howmanyScroll = 0;
+  function scrollDownText(firstWord, SecondWord) {
+    if (SecondWord.ariaSiema == "none") {
+    }
+    var wordds =
+      document.getElementById("word-ds").getBoundingClientRect().top +
+      document.getElementById("word-ds").getBoundingClientRect().height / 2;
+    console.log(
+      document
+        .getElementsByClassName("word")
+        [indexOfWord].getBoundingClientRect().top
+    );
+    if (
+      firstWord.getBoundingClientRect().top !=
+        SecondWord.getBoundingClientRect().top &&
+      SecondWord.ariaSiema === "none"
+    ) {
+      console.log("jest okej");
+      line++;
+    }
+    console.log(
+      document
+        .getElementsByClassName("word")
+        [indexOfWord].getBoundingClientRect().top >
+        wordds - 50
+    );
+    console.log(
+      "top nastepnego worda: ",
+      document
+        .getElementsByClassName("word")
+        [indexOfWord + 1].getBoundingClientRect().top
+    );
+    console.log("wordds: ", wordds - 50);
+    if (
+      document
+        .getElementsByClassName("word")
+        [indexOfWord + 1].getBoundingClientRect().top > wordds
+    ) {
+      howmanyScroll = document.getElementById("word-inner").scrollTop;
+      console.log("udało sie");
+      console.log(howmanyScroll);
+      document.getElementById("word-inner").scrollTo(0, howmanyScroll + 56);
+      $(".word")[indexOfWord].ariaCanBackspace = "nie";
+    }
+    // if (line == 2) {
+    //   console.log(SecondWord.getBoundingClientRect());
+    //   howmanyScroll +=
+    //     document.getElementsByClassName("word-ds")[0].getBoundingClientRect()
+    //       .height - SecondWord.getBoundingClientRect().height;
+    //   console.log(howmanyScroll);
+    //   document.getElementById("word-inner").scrollTo(0, howmanyScroll);
+    //   $(".word")[indexOfWord].ariaCanBackspace = "nie";
+    //   line = 0;
+    // }
+    console.log("line: ", line);
+  }
   for (let i = 0; i < $(".keys").length; i++) {
     listOfLetters.push($(".keys")[i]);
   }
@@ -173,6 +234,7 @@ $(document).ready(function () {
       }
     }
   });
+
   $(document).on("keyup", function (e) {
     for (var i = 0; i < listOfLetters.length; i++) {
       if (
@@ -183,6 +245,7 @@ $(document).ready(function () {
       }
     }
   });
+
   function numberOFWords() {
     let GoodWordsCounter = 0;
     for (let i = 0; i < $(".word").length; i++) {
@@ -194,6 +257,7 @@ $(document).ready(function () {
     let result = GoodWordsCounter / timeToDivide;
     return result;
   }
+
   function endOfGame() {
     $(
       "body"
@@ -248,6 +312,7 @@ $(document).ready(function () {
       }
     }
   }
+
   function GoodWordsVsBadWords() {
     let GoodWordsCounter = 0;
     let allWords = 0;
@@ -267,7 +332,15 @@ $(document).ready(function () {
       if (indexOfWord + 1 < letters.length) {
         let superancko = $("#text-keyboard").val();
         $(".word")[indexOfWord].ariaValue = `${superancko}`;
+        scrollDownText($(".word")[indexOfWord], $(".word")[indexOfWord + 1]);
         indexOfWord++;
+        $(".word")[indexOfWord].ariaSiema = "visited";
+      }
+      if ($(".word")[indexOfWord - 1].ariaSiema != "correct") {
+        console.log("tak");
+        $(".word")[indexOfWord - 1].style.borderBottom = "1px solid red";
+      } else {
+        $(".word")[indexOfWord - 1].style.border = "none";
       }
       if (
         indexOfWord + 1 == letters.length &&
@@ -278,6 +351,7 @@ $(document).ready(function () {
       }
     }
   }
+
   function checkAllWords() {
     let GoodWordsCounter = 0;
     for (let x = 0; x < $(".word").length; x++) {
@@ -377,17 +451,22 @@ $(document).ready(function () {
       }
     } catch (error) {}
   }
+
   function PrviousWord() {
     if ($(".word")[indexOfWord].previousElementSibling != null) {
       document.getElementById("text-keyboard").value =
         $(".word")[indexOfWord].previousElementSibling.ariaValue;
       indexOfWord--;
+      breakWord();
     }
+    $(".word")[indexOfWord].style.border = "none";
   }
+
   function currnetWord2o() {
     currnetWord = letters[indexOfWord];
     return currnetWord;
   }
+
   function checkWordValid(wordWithColors) {
     $(".word")[indexOfWord].ariaSiema = "visited";
     if (document.getElementById("text-keyboard").value.length >= 1) {
@@ -421,15 +500,20 @@ $(document).ready(function () {
       }
     }
   }
+
   function canBackspace() {
     try {
-      if ($(".word")[indexOfWord - 1].ariaSiema != "correct") {
+      if (
+        $(".word")[indexOfWord - 1].ariaSiema != "correct" &&
+        $(".word")[indexOfWord - 1].ariaCanBackspace != "nie"
+      ) {
         return true;
       } else {
         return false;
       }
     } catch (error) {}
   }
+
   function checkWord(valueUser, word) {
     let goodLetters = 0;
     var parent = $(".word")[indexOfWord];
@@ -453,11 +537,10 @@ $(document).ready(function () {
     changeColor(currnetWordColor);
     checkWordValid(currnetWordColor);
   }
+
   function Watch(time) {
     var Tick = setInterval(function () {
       seconds--;
-      // secondsHTML.html("")
-      // minutesHTML.html("")
       if (isOverMinute) {
         if (superancko == 0) {
           superancko = 60;
@@ -557,6 +640,31 @@ $(document).ready(function () {
       $("text-keyboard").focus();
     }
   });
+  var poprzednitop;
+  function breakWord() {
+    if (
+      $(".word")[indexOfWord].getBoundingClientRect().top != poprzednitop &&
+      poprzednitop != undefined &&
+      document.getElementById("text-keyboard").value.length != 1
+    ) {
+      console.log("oj tak tak jest inny");
+      console.log(document.getElementById("text-keyboard").value.slice(0, -1));
+      document.getElementById("text-keyboard").value = document
+        .getElementById("text-keyboard")
+        .value.slice(0, -1);
+      checkAllWords();
+      checkWord($("#text-keyboard").val().toLowerCase(), currnetWord2o());
+      showCurrsorBlinking($("#text-keyboard").val());
+    }
+    // $("#text-keyboard").val() = $("#text-keyboard").val().slice(0, -1)
+    console.log(
+      "currenttop: ",
+      $(".word")[indexOfWord].getBoundingClientRect().top
+    );
+    console.log("poprzednitop: ", poprzednitop);
+    poprzednitop = $(".word")[indexOfWord].getBoundingClientRect().top;
+  }
+  var Working = true;
   setTimeout(function () {
     if (loaded) {
       var fajnie =
@@ -572,6 +680,9 @@ $(document).ready(function () {
       $("#text-keyboard").val("");
     }
     if (loaded) {
+      Working = false;
+      $(".blinkingCurrsor").css("opacity", 1);
+      clearInterval(fajnie);
       if (pattern.includes(key.originalEvent.data)) {
         WrittenLetters++;
       }
@@ -580,8 +691,10 @@ $(document).ready(function () {
         FirstClick = true;
       }
       checkAllWords();
-      checkWord($("#text-keyboard").val(), currnetWord2o());
+      checkWord($("#text-keyboard").val().toLowerCase(), currnetWord2o());
       showCurrsorBlinking($("#text-keyboard").val());
+      breakWord();
+      // console.log("poprzednitop: ", poprzednitop);
     }
   });
   $("#text-keyboard").on("keydown", function (e) {
@@ -589,9 +702,9 @@ $(document).ready(function () {
       e.preventDefault();
       if (loaded) {
         SpaceClicked = true;
+        checkWordValid(currnetWordColor);
         nextWord();
         document.getElementById("text-keyboard").value = "";
-        checkWordValid(currnetWordColor);
         showCurrsorBlinking($("#text-keyboard").val());
         SpaceClicked = false;
       }
@@ -612,4 +725,19 @@ $(document).ready(function () {
   window.addEventListener("wheel", (e) => e.preventDefault(), {
     passive: false,
   });
+  var is = true;
+  function cursorShowingOrNot() {
+    if (is) {
+      $(".blinkingCurrsor").css("opacity", 0);
+      is = false;
+    } else {
+      $(".blinkingCurrsor").css("opacity", 1);
+      is = true;
+    }
+  }
+  let fajnie = setInterval(function () {
+    if (Working) {
+      cursorShowingOrNot();
+    }
+  }, 750);
 });

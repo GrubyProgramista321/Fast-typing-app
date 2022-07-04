@@ -1,4 +1,5 @@
-from click import style
+from traceback import print_tb
+from xml.dom import WrongDocumentErr
 from configuration import *
 import requests
 from bs4 import BeautifulSoup as bs
@@ -8,6 +9,15 @@ class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
+
+
+page_wikipedia = requests.get("https://en.wikipedia.org/wiki/Most_common_words_in_English")
+# page_2 = requests.get("https://www.worldclasslearning.com/english/4000-most-common-english-words.html")
+# word_2 = [i.text for i in (bs(page_2.content).find_all("td"))]
+words = [i.text for i in bs(page_wikipedia.content).find_all(class_="extiw")]
+# for i in word_2:
+        # words.append(i)
+print(words) 
 
 
 @login_manager.user_loader
@@ -48,22 +58,26 @@ def login():
             print("moze kiedys")
     return render_template("login.html")
 
+       
 
 @app.route("/create_word", methods=["GET", "POST"])
 def create_word():
-        page_wikipedia = requests.get("https://en.wikipedia.org/wiki/Most_common_words_in_English")
-        page_2 = requests.get("https://www.worldclasslearning.com/english/4000-most-common-english-words.html")
-        word_2 = [i.text for i in (bs(page_2.content).find_all("td"))]
-        words = [i.text for i in bs(page_wikipedia.content).find_all(class_="extiw")]
-        print(word_2)
-        for i in word_2:
-            words.append(i) 
-        text_array = []
-        for _ in range(50):
-            oneWord = random.randint(0, len(words))
-            text_array.append(words[oneWord])
-        text = " ".join(text_array)
-        return text
+    tak = 300
+    text_array = []
+    for i in range(tak):
+        oneWord = random.randint(0, len(words))
+        if (oneWord != "&nbsp" or oneWord != "\xa0"):
+            try:
+                text_array.append(words[oneWord])
+            except:
+                tak = tak + 1
+                print(tak)     
+        else:
+            numberOFWords = numberOFWords + 1
+            print("wo tego") 
+    text = " ".join(text_array)
+    print(len(text_array))
+    return text 
 
 if __name__ == '__main__':
     app.run(debug=True)

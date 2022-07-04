@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -29,13 +29,13 @@
     {% if current_user.is_authenticated %}
     <h1 class="fajnie">{{ current_user.username }}</h1>
     {% endif %}
-    <input type="text" id="text-keyboard" class="area-text" />
+    <input type="text" id="text-keyboard" class="area-text" maxlength="8" />
     <div id="clock">
       <h1 class="clock" id="minutes"></h1>
       <h1 class="clock">:</h1>
       <h1 class="clock" id="seconds"></h1>
     </div>
-    <div class="word-ds">
+    <div class="word-ds" id="word-ds">
       <div id="word-inner">
         <div class="lds-spinner">
           <div></div>
