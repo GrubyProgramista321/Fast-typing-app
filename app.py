@@ -1,42 +1,42 @@
-from traceback import print_tb
-from xml.dom import WrongDocumentErr
+
+from contextlib import redirect_stderr
+import flask_sqlalchemy
+from pkg_resources import require
+from sqlalchemy import false, true
 from configuration import *
+from Models import Users
 import requests
 from bs4 import BeautifulSoup as bs
 import random
 
-class Users(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, nullable=False)
-    password = db.Column(db.String, nullable=False)
-
 
 page_wikipedia = requests.get("https://en.wikipedia.org/wiki/Most_common_words_in_English")
-# page_2 = requests.get("https://www.worldclasslearning.com/english/4000-most-common-english-words.html")
-# word_2 = [i.text for i in (bs(page_2.content).find_all("td"))]
 words = [i.text for i in bs(page_wikipedia.content).find_all(class_="extiw")]
-# for i in word_2:
-        # words.append(i)
-print(words) 
 
 
 @login_manager.user_loader
 def load_user(user_id):
     return Users.query.get(user_id)
 
-@app.route("/")
+@app.route("/", methods=["POST", "GET"])
 def index():
     return render_template("index.html")
+
+@app.route("/current_user", methods=["GET"])
+def currentUser():
+    if (current_user.is_authenticated):
+        return "is"
+    else:
+        return "none"
 
 
 @app.route("/register_account", methods=['POST', 'GET'])
 def register():
-    if current_user.is_authenticated:
-        print("fajnie")
     if request.method == "POST":
         username_get = request.form["username"]
         passowrd_get = request.form["password"]
-        add_user = Users(username=username_get, password=passowrd_get)
+        email_get = request.form["e-mail"]
+        add_user = Users(username=username_get, password=passowrd_get, email=email_get)
         db.session.add(add_user)
         db.session.commit()
         Users.query.all()
@@ -44,19 +44,21 @@ def register():
 
 @app.route("/login", methods = ["POST", "GET"])
 def login():
-    if current_user.is_authenticated:
-        print("tak")
-        return redirect("/")
     if request.method == "POST":
-        username_get_login = request.form["username"]
-        passowrd_get_login = request.form["password"]
+        username_get_login = request.form.get('username','', type=str)
+        passowrd_get_login = request.form.get('password','', type=str)
+        # return username_get_login, passowrd_get_login
         user = Users.query.filter_by(username=username_get_login,password=passowrd_get_login).first()
         if user != None:
-            login_user(user)
-            return redirect("/")
+            login_user(user, remember=True)
+            return "true"
         else:
-            print("moze kiedys")
-    return render_template("login.html")
+            return "false"
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect("/") 
 
        
 
@@ -70,13 +72,12 @@ def create_word():
             try:
                 text_array.append(words[oneWord])
             except:
-                tak = tak + 1
-                print(tak)     
+                tak = tak + 1 
+                old_number = oneWord
         else:
             numberOFWords = numberOFWords + 1
             print("wo tego") 
     text = " ".join(text_array)
-    print(len(text_array))
     return text 
 
 if __name__ == '__main__':

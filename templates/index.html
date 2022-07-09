@@ -11,138 +11,176 @@
       crossorigin="anonymous"
     />
     <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      src="https://kit.fontawesome.com/62a5788378.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
       crossorigin="anonymous"
     ></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>Document</title>
     <link rel="stylesheet" href="../static/index.css" />
+    <link rel="stylesheet" href="../static/bootstrap.css" />
   </head>
-
-  <body class="bg-dark">
-    <div class="header">
-      <div class="padding-header">
-        <h1 class="logo">Logo</h1>
-      </div>
-    </div>
-    {% if current_user.is_authenticated %}
-    <h1 class="fajnie">{{ current_user.username }}</h1>
-    {% endif %}
-    <input type="text" id="text-keyboard" class="area-text" maxlength="8" />
-    <div id="clock">
-      <h1 class="clock" id="minutes"></h1>
-      <h1 class="clock">:</h1>
-      <h1 class="clock" id="seconds"></h1>
-    </div>
-    <div class="word-ds" id="word-ds">
-      <div id="word-inner">
-        <div class="lds-spinner">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
+  <body>
+    <div class="game-div">
+      <div class="header">
+        <div class="padding-header">
+          <h1 class="logo">Logo</h1>
+          {% if current_user.is_authenticated %}
+          <div class="user-profile-mini">
+            <div class="user-profile-info-div">
+              <img
+                src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBw8RBhESEQ8QEhAPEBAQEBAQDRIQDw8QFREXFxUVHxMYHCggGBolGxUXITEhJSkrLi4uFx8zODMsNygtLisBCgoKDQ0OFw8NFSsdFB0rKysrKystKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAOEA4QMBIgACEQEDEQH/xAAbAAEBAAMBAQEAAAAAAAAAAAAABQIDBAEGB//EADMQAQABAgQDBgMHBQAAAAAAAAABAhEDBCExBVGBEkFhcZGxJDShFCIyQlKC0XLB4fDx/8QAFgEBAQEAAAAAAAAAAAAAAAAAAAEC/8QAFhEBAQEAAAAAAAAAAAAAAAAAAAER/9oADAMBAAIRAxEAPwD9MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABlRRVNVoi8+AMXsRrtMzO0R3uujhtc7zFPPvlRy+XpojSNe+eaaJuHw+ud7R5t9PC4trX6QohonTwuP1z6Qwr4XVbSqJ89FQNELEytdO9PWNYaX0bkzORpq1jSrw2k0RxnjYU04lp392FlAAAAAAAAAAAAAAAAAAC2i3ksCKMKNPvTrP8JGBTfGpjnMRPqvpQAQAAAAAAaM3l+3h+MbTb6IlW9uWk+b6JI4phWzF+6qPrG/uso4wFAAAAAAAAAAAAAAAAHRw+Pi6evstovDo+Mp6+y0lABAAAAAAAcfFKb5W/KYl2ObiM/B1eX9yCKE7jQAAAAAAAAAAAAAAAA6uG/N09fZZQ8jPxVPmuJQAQAAAAAAEbiNU/api8200vpssoee+br8yDneg0AAAAAAAAAAAAAAAEA35KmftNM2m0TvbT1XGrKUWy1MeF/XVtSgAgAAAAAAIWbiftFV4mL1Ta8brrl4lRE5Secax4EEYJ3GgAAAAAAAAAAAAAAABb4fXfKU+GnpLoTuEV6VU9YUUoAIAAAAAADj4rVbL2/VNujsSuLYl8aKeUX6z/AMWQcM7gKAAAAAAAAAAAAAAAANmXxpoxLx6c1nK4/bwu1a2sxa6Ep8JxPxU/uQUAEAAAAAAGnN4/Ywr2vN7RCJiVzViTM7zLv4vX+Gn90+0JzQAAAAAAAAAAAAAAAAAANuVxezjxPdtLUA+jvoOPheJM4E3/ACzaPJ2M0AAAAAc3EKpjLTbwjoCXm8XtY8z3bR5NLyz1oAAAAAAAAAAAAAAAAAAAAV+FU/Dz41S7GjIUWylPjF29mgAAAA5+IRfKVdJdDXmKb4NUc4BACw0AAAAAAAAAAAAAAAAAAD3DovXEc5sU0TM2iLquRyfYntVfi5cv8oOymLUxHKLPQQAAAAAAQczh9nHqjx+k7NS1ncr26bxpVHPbyR8TDmmq0xb2aGIWAAAAAAAAAAAAAAiLzbW88t3dgcOmdaptHKNwcVNEzOkTPlF5d2X4bM61zbwjf17lHCwaaI0iI/3mzKMMLBppptEW92YMgAAAAAAAAxxKIqi0xE+cMg0Tsxw3vonpM6eqfiYc0zaqJjzjR9Cxrw4qptMXWD516oZjhsx+CeekuGqi02mLTG8TuoxAAAAAAAiAHVlcjVXF5+7T47y68lkYjWrWe6LaR/LuTRqwMvTRGkdZ3ltBKAAAAAAAAAAAAAAAADXi4NNUfei/vHVsASszkKo1p1j6uHvfRuTN5KKomY0q92tEce1UzFUxMTExveHgAACjwvL/AJ58qf5T6Kb1RHObPoMKi2HEcoiEoyAQAAAAAAAAAAAAAAAAAAAAAAcPEsvejtRvTv40pT6OY0QMxh9nFmOU26KNYCjZlvmKf6oXwSgAgAAAAAAAAAAAAAAAAAAAAAAIvEfm6unsCwcwCj//2Q=="
+                alt="{{current_user.username}}"
+                class="user-profile-image"
+              />
+              <a href="/logout">{{current_user.username}}</a>
+            </div>
+            <i class="fa-solid fa-arrow-down"></i>
+            <div class="user-profile-stats"></div>
+          </div>
+          {% else %}
+          <div class="dropdown">
+            <button id="dropdown-button-menu">
+              <i class="fa-solid fa-user"></i>
+            </button>
+            <div class="dropdown-menu-non-bootstrap">
+              <div class="login-form">
+                <h1 id="title">Login In</h1>
+                <!-- <li><a class="dropdown-item" href="#">Dropdown item</a></li> -->
+                <div class="form">
+                  <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    class="input-login"
+                    placeholder="Username"
+                  />
+                  <input
+                    type="text"
+                    name="password"
+                    id="password"
+                    class="input-login"
+                    placeholder="Password"
+                  /><br />
+                </div>
+              </div>
+              <button type="button" id="submit-button">
+                <i class="fa-solid fa-right-to-bracket"></i>
+              </button>
+            </div>
+          </div>
+          {% endif %}
         </div>
       </div>
-    </div>
-    <div class="under-textarea-div">
-      <div class="keyboard" id="keyboard">
-        <div class="zero">
-          <button class="keys" id="keys" value="1">1</button>
-          <button class="keys" id="keys" value="2">2</button>
-          <button class="keys" id="keys" value="3">3</button>
-          <button class="keys" id="keys" value="4">4</button>
-          <button class="keys" id="keys" value="5">5</button>
-          <button class="keys" id="keys" value="6">6</button>
-          <button class="keys" id="keys" value="7">7</button>
-          <button class="keys" id="keys" value="8">8</button>
-          <button class="keys" id="keys" value="9">9</button>
-          <button class="keys" id="keys" value="0">0</button>
-          <button class="keys" id="keys" value="-">-</button>
-          <button class="keys" id="keys" value="=">=</button>
-          <button class="keys backspace" id="keys" value="Backspace">
-            Backspace
-          </button>
+      <div class="app">
+        <input
+          type="text"
+          id="text-keyboard"
+          class="area-text"
+          maxlength="15"
+        />
+        <div id="clock">
+          <h1 class="clock" id="minutes"></h1>
+          <h1 class="clock">:</h1>
+          <h1 class="clock" id="seconds"></h1>
         </div>
-        <div class="first">
-          <button class="keys tab" id="keys" value="Tab">Tab</button>
-          <button class="keys" id="keys" value="q">q</button>
-          <button class="keys" id="keys" value="w">w</button>
-          <button class="keys" id="keys" value="e">e</button>
-          <button class="keys" id="keys" value="r">r</button>
-          <button class="keys" id="keys" value="t">t</button>
-          <button class="keys" id="kets" value="y">y</button>
-          <button class="keys" id="keys" value="u">u</button>
-          <button class="keys" id="keys" value="i">i</button>
-          <button class="keys" id="keys" value="o">o</button>
-          <button class="keys" id="keys" value="p">p</button>
-          <button class="keys" id="keys" value="[">[</button>
-          <button class="keys" id="keys" value="]">]</button>
-          <button class="keys" id="keys" value="\">\</button>
+        <div class="word-ds" id="word-ds">
+          <div class="lds-spinner">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <div id="word-inner"></div>
         </div>
-        <div class="second">
-          <button class="keys caps" id="keys" value="CapsLock">CapsLk</button>
-          <button class="keys" id="keys" value="a">a</button>
-          <button class="keys" id="keys" value="s">s</button>
-          <button class="keys" id="keys" value="d">d</button>
-          <button class="keys" id="keys" value="f">f</button>
-          <button class="keys" id="keys" value="g">g</button>
-          <button class="keys" id="keys" value="h">h</button>
-          <button class="keys" id="keys" value="j">j</button>
-          <button class="keys" id="keys" value="k">k</button>
-          <button class="keys" id="keys" value="l">l</button>
-          <button class="keys" id="keys" value=";">;</button>
-          <button class="keys" id="keys" value="'">'</button>
-          <button class="keys enter" id="keys" value="Enter">Enter</button>
-        </div>
-        <div class="third">
-          <button class="keys shift" id="keys" value="Shift">shift</button>
-          <button class="keys" id="keys" value="z">z</button>
-          <button class="keys" id="keys" value="x">x</button>
-          <button class="keys" id="keys" value="c">c</button>
-          <button class="keys" id="keys" value="v">v</button>
-          <button class="keys" id="keys" value="b">b</button>
-          <button class="keys" id="keys" value="n">n</button>
-          <button class="keys" id="keys" value="m">m</button>
-          <button class="keys" id="keys" value=",">,</button>
-          <button class="keys" id="keys" value=".">.</button>
-          <button class="keys" id="keys" value="/">/</button>
-          <button class="keys shift" id="keys" value="Shift">shift</button>
+        <div class="under-textarea-div">
+          <!-- <div class="keyboard" id="keyboard">
+            <div class="zero">
+              <button class="keys" id="keys" value="1">1</button>
+              <button class="keys" id="keys" value="2">2</button>
+              <button class="keys" id="keys" value="3">3</button>
+              <button class="keys" id="keys" value="4">4</button>
+              <button class="keys" id="keys" value="5">5</button>
+              <button class="keys" id="keys" value="6">6</button>
+              <button class="keys" id="keys" value="7">7</button>
+              <button class="keys" id="keys" value="8">8</button>
+              <button class="keys" id="keys" value="9">9</button>
+              <button class="keys" id="keys" value="0">0</button>
+              <button class="keys" id="keys" value="-">-</button>
+              <button class="keys" id="keys" value="=">=</button>
+              <button class="keys backspace" id="keys" value="Backspace">
+                Backspace
+              </button>
+            </div>
+            <div class="first">
+              <button class="keys tab" id="keys" value="Tab">Tab</button>
+              <button class="keys" id="keys" value="q">q</button>
+              <button class="keys" id="keys" value="w">w</button>
+              <button class="keys" id="keys" value="e">e</button>
+              <button class="keys" id="keys" value="r">r</button>
+              <button class="keys" id="keys" value="t">t</button>
+              <button class="keys" id="kets" value="y">y</button>
+              <button class="keys" id="keys" value="u">u</button>
+              <button class="keys" id="keys" value="i">i</button>
+              <button class="keys" id="keys" value="o">o</button>
+              <button class="keys" id="keys" value="p">p</button>
+              <button class="keys" id="keys" value="[">[</button>
+              <button class="keys" id="keys" value="]">]</button>
+              <button class="keys" id="keys" value="\">\</button>
+            </div>
+            <div class="second">
+              <button class="keys caps" id="keys" value="CapsLock">
+                CapsLk
+              </button>
+              <button class="keys" id="keys" value="a">a</button>
+              <button class="keys" id="keys" value="s">s</button>
+              <button class="keys" id="keys" value="d">d</button>
+              <button class="keys" id="keys" value="f">f</button>
+              <button class="keys" id="keys" value="g">g</button>
+              <button class="keys" id="keys" value="h">h</button>
+              <button class="keys" id="keys" value="j">j</button>
+              <button class="keys" id="keys" value="k">k</button>
+              <button class="keys" id="keys" value="l">l</button>
+              <button class="keys" id="keys" value=";">;</button>
+              <button class="keys" id="keys" value="'">'</button>
+              <button class="keys enter" id="keys" value="Enter">Enter</button>
+            </div>
+            <div class="third">
+              <button class="keys shift" id="keys" value="Shift">shift</button>
+              <button class="keys" id="keys" value="z">z</button>
+              <button class="keys" id="keys" value="x">x</button>
+              <button class="keys" id="keys" value="c">c</button>
+              <button class="keys" id="keys" value="v">v</button>
+              <button class="keys" id="keys" value="b">b</button>
+              <button class="keys" id="keys" value="n">n</button>
+              <button class="keys" id="keys" value="m">m</button>
+              <button class="keys" id="keys" value=",">,</button>
+              <button class="keys" id="keys" value=".">.</button>
+              <button class="keys" id="keys" value="/">/</button>
+              <button class="keys shift" id="keys" value="Shift">shift</button>
+            </div>
+          </div>
+        </div> -->
         </div>
       </div>
-      FEWFEW FEW FEW
-      <fieldset>
-        FEW F
-        <em>F EW F EWF FEW </em>
-        <br />
-        <br />
-
-        <br />
-        <br />
-
-        <br />
-        <br />
-        <br />
-
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-      </fieldset>
+      <div class="side-menu">taknieniewiem</div>
     </div>
     <script type="module" src="../static/index.js"></script>
+    <script src="../static/login.js"></script>
     <script src="../static/zasady.js"></script>
+    <script src="../static/user.js"></script>
   </body>
 </html>

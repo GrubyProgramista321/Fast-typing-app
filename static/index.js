@@ -91,18 +91,25 @@ var heightOf2Lines;
 var loaded = false;
 var FirstClick = false;
 $(document).ready(function () {
+  // export default cursorShowingOrNot();
+  $("#word-inner").hide();
   function createWord() {
     $.ajax({
       url: "/create_word",
       success: function (result) {
         text = result.toLowerCase();
-        $(".word-ds").append('<div class="blinkingCurrsor"></div>');
+        $(".lds-spinner").remove();
         addWordsToHTML(text);
-        showCurrsorBlinking($("#text-keyboard").val());
         heightOf2Lines =
           document.getElementById("word").getBoundingClientRect().height * 2;
         console.log(heightOf2Lines);
         loaded = true;
+        $("#word-inner").fadeIn(200);
+        $("body").append('<div class="blinkingCurrsor"></div>');
+        setTimeout(function () {
+          $(".blinkingCurrsor").fadeIn();
+          showCurrsorBlinking($("#text-keyboard").val());
+        }, 300);
       },
       error: function () {
         createWord();
@@ -111,7 +118,7 @@ $(document).ready(function () {
   }
   createWord();
   $(".keys").click(function () {
-    $("#text-keyboard").focus();
+    // $("#text-keyboard").focus();
     if (!FirstClick) {
       Watch(time);
       FirstClick = true;
@@ -159,66 +166,60 @@ $(document).ready(function () {
   var line = 0;
   var howmanyScroll = 0;
   function scrollDownText(firstWord, SecondWord) {
-    if (SecondWord.ariaSiema == "none") {
-    }
     var wordds =
       document.getElementById("word-ds").getBoundingClientRect().top +
       document.getElementById("word-ds").getBoundingClientRect().height / 2;
-    console.log(
-      document
-        .getElementsByClassName("word")
-        [indexOfWord].getBoundingClientRect().top
-    );
-    if (
-      firstWord.getBoundingClientRect().top !=
-        SecondWord.getBoundingClientRect().top &&
-      SecondWord.ariaSiema === "none"
-    ) {
-      console.log("jest okej");
-      line++;
-    }
-    console.log(
-      document
-        .getElementsByClassName("word")
-        [indexOfWord].getBoundingClientRect().top >
-        wordds - 50
-    );
-    console.log(
-      "top nastepnego worda: ",
-      document
-        .getElementsByClassName("word")
-        [indexOfWord + 1].getBoundingClientRect().top
-    );
-    console.log("wordds: ", wordds - 50);
     if (
       document
         .getElementsByClassName("word")
         [indexOfWord + 1].getBoundingClientRect().top > wordds
     ) {
       howmanyScroll = document.getElementById("word-inner").scrollTop;
-      console.log("udało sie");
-      console.log(howmanyScroll);
       document.getElementById("word-inner").scrollTo(0, howmanyScroll + 56);
       $(".word")[indexOfWord].ariaCanBackspace = "nie";
     }
-    // if (line == 2) {
-    //   console.log(SecondWord.getBoundingClientRect());
-    //   howmanyScroll +=
-    //     document.getElementsByClassName("word-ds")[0].getBoundingClientRect()
-    //       .height - SecondWord.getBoundingClientRect().height;
-    //   console.log(howmanyScroll);
-    //   document.getElementById("word-inner").scrollTo(0, howmanyScroll);
-    //   $(".word")[indexOfWord].ariaCanBackspace = "nie";
-    //   line = 0;
-    // }
     console.log("line: ", line);
+  }
+  function scrollResize() {
+    var oneOfthird = 55; // 1/3 wysokosci diva "word-ds"
+    var oneLine = 56;
+    // console.log(
+    howmanyScroll = document.getElementById("word-inner").scrollTop;
+    //   `  document.getElementById("word-ds").getBoundingClientRect().top +
+    //     oneOfthird * 2`,
+    //   document.getElementById("word-ds").getBoundingClientRect().top +
+    //     oneOfthird * 3
+    // );
+    // console.log(
+    //   `     document
+    // .getElementsByClassName("word")
+    // [indexOfWord].getBoundingClientRect().top`,
+    //   document
+    //     .getElementsByClassName("word")
+    //     [indexOfWord].getBoundingClientRect().top
+    // );
+    if (
+      document.getElementById("word-inner").getBoundingClientRect().top +
+        oneOfthird +
+        58 <
+      $(".word")[indexOfWord].getBoundingClientRect().top
+    ) {
+      document.getElementById("word-inner").scrollTop = howmanyScroll + oneLine;
+    }
+    if (
+      document.getElementById("word-inner").getBoundingClientRect().top +
+        oneOfthird >
+      $(".word")[indexOfWord].getBoundingClientRect().top
+    ) {
+      // howmanyScroll = document.getElementById("word-inner").scrollTop;
+      document.getElementById("word-inner").scrollTop = howmanyScroll - oneLine;
+    }
   }
   for (let i = 0; i < $(".keys").length; i++) {
     listOfLetters.push($(".keys")[i]);
   }
   $(document).on("keydown", function (e) {
     // press key
-    $("#text-keyboard").focus();
     for (var i = 0; i < $(".letter").length; i++) {
       $(".letter")[i].style.color = "black";
     }
@@ -503,9 +504,18 @@ $(document).ready(function () {
 
   function canBackspace() {
     try {
+      console.log(
+        `$(".word")[indexOfWord - 1].getBoundingClientRect().top`,
+        $(".word")[indexOfWord - 1].getBoundingClientRect().top
+      );
+      console.log(
+        `$("#word-inner")[0].getBoundingClientRect().top`,
+        $("#word-inner")[0].getBoundingClientRect().top
+      );
       if (
         $(".word")[indexOfWord - 1].ariaSiema != "correct" &&
-        $(".word")[indexOfWord - 1].ariaCanBackspace != "nie"
+        $(".word")[indexOfWord - 1].getBoundingClientRect().top + 10 >
+          $("#word-inner")[0].getBoundingClientRect().top
       ) {
         return true;
       } else {
@@ -632,13 +642,12 @@ $(document).ready(function () {
         }
       }
     }
-    $("#text-keyboard").focus();
+    // $("#text-keyboard").focus();
     currnetWord = letters[indexOfWord];
   }
-  $(".word-ds").on("click", function () {
-    if (loaded) {
-      $("text-keyboard").focus();
-    }
+  $("#word-ds").on("click", function () {
+    console.log("tak");
+    $("#text-keyboard").focus();
   });
   var poprzednitop;
   function breakWord() {
@@ -657,11 +666,7 @@ $(document).ready(function () {
       showCurrsorBlinking($("#text-keyboard").val());
     }
     // $("#text-keyboard").val() = $("#text-keyboard").val().slice(0, -1)
-    console.log(
-      "currenttop: ",
-      $(".word")[indexOfWord].getBoundingClientRect().top
-    );
-    console.log("poprzednitop: ", poprzednitop);
+    // console.log("poprzednitop: ", poprzednitop);
     poprzednitop = $(".word")[indexOfWord].getBoundingClientRect().top;
   }
   var Working = true;
@@ -740,4 +745,9 @@ $(document).ready(function () {
       cursorShowingOrNot();
     }
   }, 750);
+  $(window).on("resize", function () {
+    scrollResize();
+    // $("#text-keyboard").focus();
+    showCurrsorBlinking($("#text-keyboard").val());
+  });
 });

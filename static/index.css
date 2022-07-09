@@ -1,17 +1,26 @@
-.area-text {
-  width: 100%;
-  opacity: 1;
-  position: absolute;
-}
-
-.html,
+html,
 body {
   height: 100%;
-  width: 100%;
+  /* width: 100%; */
   scrollbar-width: none;
+}
+
+.area-text {
+  /* width: 100%; */
+  opacity: 0;
+  position: absolute;
 }
 .header {
   height: 100px;
+}
+.app {
+  display: flex;
+}
+.game-div {
+  /* display: flex; */
+  height: 100%;
+  width: 100%;
+  position: relative;
 }
 .padding-header {
   padding: 20px;
@@ -20,6 +29,47 @@ body {
 }
 .hideCursor {
   opacity: 0;
+  border-bottom-left-radius: 0;
+}
+.user-profile-mini {
+  transition: all 0.2s;
+  width: 200px;
+  border-radius: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: auto;
+  background-color: #0d153c;
+  position: relative;
+}
+.user-profile-mini-123 {
+  width: 300px;
+  border-radius: 10px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+.user-profile-image {
+  height: 35px;
+  width: 35px;
+  border-radius: 100%;
+}
+i {
+  color: white;
+}
+.user-profile-stats {
+  position: absolute;
+  background-color: #0d153c;
+  height: 0;
+  top: 40px;
+  right: 0;
+  height: 0px;
+  transition: height 0.2s;
+  width: inherit;
+}
+.user-profile-stats-123 {
+  height: 300px;
 }
 .wpm-style-div {
   width: fit-content;
@@ -31,13 +81,17 @@ body {
 .logo {
   color: white;
 }
+#title {
+  margin-top: 10px;
+}
 .blinkingCurrsor {
-  width: 3px;
+  display: none;
+  width: 2px;
   opacity: 1;
   height: 40px;
   background-color: rgb(255, 123, 0);
   position: absolute;
-  transition: all 0.15s;
+  transition: all 0.05s;
 }
 #clock {
   display: flex;
@@ -48,7 +102,9 @@ body {
 .additional-letters {
   color: rgb(138, 0, 0);
 }
-
+.alert-danger {
+  margin-top: 1em;
+}
 .keys:active {
   background-color: green;
 }
@@ -65,27 +121,45 @@ body {
   color: white;
 }
 #word-inner {
-  text-align: center;
+  /* text-align: center; */
   font-size: 30px;
   overflow: hidden;
   transition: color 0.4s;
   display: flex;
   justify-content: center;
-  width: 70%;
+  width: 1300px;
   /* height: ; */
   flex-wrap: wrap;
   /* padding-left: 2e00px; */
   /* padding-right: 200px; */
+  pointer-events: none;
+}
+
+.taktycznie {
+  position: relative;
+  height: inherit;
+}
+.col-sm- {
+  height: inherit;
+}
+.row {
+  height: 100%;
 }
 .word-ds {
   display: flex;
   width: 100%;
   height: 165px;
-  overflow-y: auto;
+  overflow-y: hidden;
   justify-content: center;
   scrollbar-color: black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 100000;
   margin-top: 30px;
   margin-bottom: 30px;
+  transform: translate(-50%, -50%);
+  /* pointer-events: none; */
 }
 .fajnie {
   color: white;
@@ -118,13 +192,18 @@ body {
 .caps {
   width: auto;
 }
-
+.under-textarea-div {
+  position: absolute;
+  bottom: -5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .enter {
   width: 170px;
 }
 
 .keyboard {
-  width: 100%;
+  width: 1000px;
   text-align: center;
 }
 
@@ -208,4 +287,81 @@ body {
   100% {
     opacity: 0;
   }
+}
+body {
+  background-color: #000018;
+}
+.dropdown-menu-non-bootstrap {
+  display: none;
+  width: 400px;
+  background-color: white;
+  color: white;
+  position: absolute;
+  /* top: 100px; */
+  right: 0;
+  /* border: 1px solid orange; */
+  background-color: #0d153c;
+  /* text-align: center; */
+  padding: 10px;
+  border-radius: 15px;
+  /* height: 100px; */
+  /* display: block; */
+}
+.dropdown {
+  position: relative;
+}
+.login-form {
+  display: none;
+}
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.input-login::placeholder {
+  color: rgba(255, 255, 255, 0.473);
+}
+#dropdown-button-menu {
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  color: white;
+  background-color: transparent;
+  padding: 5px;
+  /* width: max-content; */
+  border: none;
+}
+#dropdown-button-menu i {
+  color: white;
+}
+.input-login:focus {
+  outline: 1px solid #1662c5;
+  border: 2px solid #1662c5;
+}
+.input-login:active {
+  border: 2px solid #1662c5;
+}
+.input-login {
+  border: 2px solid #343a59;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: transparent;
+  color: white;
+  margin: 10px;
+  width: 95%;
+}
+#submit-button {
+  margin-top: 30px;
+  margin-right: 30px;
+  margin-bottom: 30px;
+  margin-left: 10px;
+  padding: 5px;
+  background-color: #1a83ff;
+  border: none;
+  width: 189px;
+  -webkit-box-shadow: -2px 3px 30px -17px rgba(26, 131, 255, 1);
+  -moz-box-shadow: -2px 3px 30px -17px rgba(26, 131, 255, 1);
+  box-shadow: -2px 3px 30px -17px rgba(26, 131, 255, 1);
+  border-radius: 5px;
 }
