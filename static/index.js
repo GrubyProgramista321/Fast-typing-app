@@ -702,7 +702,8 @@ $(document).ready(function () {
       // console.log("poprzednitop: ", poprzednitop);
     }
   });
-  $("#text-keyboard").on("keydown", function (e) {
+  $("#text-keyboard").on("keydown", function (k) {
+    let e = k.originalEvent;
     if (e.code === "Space") {
       e.preventDefault();
       if (loaded) {

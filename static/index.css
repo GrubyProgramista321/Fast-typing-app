@@ -36,11 +36,11 @@ body {
   width: 200px;
   border-radius: 100px;
   display: flex;
+  height: 43px;
   justify-content: space-between;
   align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
-  height: auto;
+  padding: 10px;
+  /* height: auto; */
   background-color: #0d153c;
   position: relative;
 }
@@ -58,18 +58,36 @@ body {
 i {
   color: white;
 }
+.username-info {
+  color: white;
+  text-align: center;
+}
 .user-profile-stats {
   position: absolute;
   background-color: #0d153c;
   height: 0;
-  top: 40px;
+  top: 42px;
   right: 0;
   height: 0px;
   transition: height 0.2s;
   width: inherit;
 }
+.stats {
+  display: none;
+  transition: 0.1s all;
+}
+.statsFajnie {
+  display: block;
+}
 .user-profile-stats-123 {
   height: 300px;
+  padding: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.input-label {
+  padding: 10px;
+  color: white;
 }
 .wpm-style-div {
   width: fit-content;
@@ -80,6 +98,28 @@ i {
 }
 .logo {
   color: white;
+}
+.modal-content {
+  width: 600px;
+  border-radius: 10px;
+  position: relative;
+  background-color: #1d1e22;
+}
+.modal-header {
+  border: none;
+}
+.modal-footer {
+  border: none;
+}
+.bg-loader {
+  height: 100%;
+  position: absolute;
+  display: flex;
+  z-index: 9990;
+  justify-content: center;
+  align-items: center;
+  width: inherit;
+  background-color: rgba(20, 20, 20, 0.623);
 }
 #title {
   margin-top: 10px;
@@ -96,13 +136,18 @@ i {
 #clock {
   display: flex;
 }
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .img-logo {
   height: 100px;
 }
 .additional-letters {
   color: rgb(138, 0, 0);
 }
-.alert-danger {
+.alert {
   margin-top: 1em;
 }
 .keys:active {
@@ -312,6 +357,92 @@ body {
 }
 .login-form {
   display: none;
+}
+.register-inputs {
+  border: none;
+  width: 100%;
+  background-color: transparent;
+  color: white;
+}
+.exit-button {
+  background-color: transparent;
+  padding: 10px;
+  border: none;
+}
+.exit-button i {
+  color: red;
+  font-size: 20px;
+}
+.blue-terms {
+  color: blue;
+  font-weight: 900;
+}
+.register-input-div {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #2e3034;
+  border-radius: 5px;
+  display: flex;
+  margin-bottom: 20px;
+}
+#submit-reigster-button {
+  margin-top: 20px;
+  width: 80%;
+  background-color: #5168f4;
+}
+.register-inputs:focus {
+  border: none;
+  outline: none;
+}
+.register-inputs::placeholder {
+  color: #949494;
+}
+.icon-register {
+  padding-right: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  color: #88898c;
+}
+.reigster-checkbox-input {
+  display: flex;
+  width: 75%;
+  /* align-items: center; */
+}
+.tak,
+.tou-text {
+  width: fit-content;
+}
+.tou-text {
+  color: white;
+  font-size: 15px;
+  margin-left: 30px;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+}
+.tak:checked,
+.tak::-ms-check {
+  background-color: #5268f3;
+  color: white;
+}
+.tak {
+  height: 25px;
+  width: 25px;
+}
+.border-nder-input {
+  height: 3px;
+  background-color: rgb(255, 255, 255);
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  border: none;
+}
+.width-border {
+  height: 4px;
+  background-color: blue;
+  transition: all 0.3s;
+  width: 0%;
 }
 .form {
   display: flex;

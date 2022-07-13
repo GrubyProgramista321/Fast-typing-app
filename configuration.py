@@ -1,6 +1,11 @@
 from flask import Flask, redirect, render_template, request, url_for, flash
-from flask_login import LoginManager, current_user, logout_user, login_user, UserMixin
+from flask_login import LoginManager, current_user, logout_user, login_user, UserMixin, login_required
 from flask_sqlalchemy import SQLAlchemy
+import requests
+from bs4 import BeautifulSoup as bs
+import random
+from pkg_resources import require
+from validate_email_address import validate_email
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "df0331cefc6c2b9a5d0208a726a5d1c0fd37324feba25506"
