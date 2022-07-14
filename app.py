@@ -123,7 +123,7 @@ def create_word():
     text_array = []
     for i in range(tak):
         oneWord = random.randint(0, len(words))
-        if (oneWord != "&nbsp" or oneWord != "\xa0"):
+        if (words[oneWord] != "&nbsp" or words[oneWord] != "\xa0"):
             try:
                 text_array.append(words[oneWord])
             except:
@@ -131,7 +131,6 @@ def create_word():
                 old_number = oneWord
         else:
             numberOFWords = numberOFWords + 1
-            print("wo tego") 
     text = " ".join(text_array)
     return text 
 

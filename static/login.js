@@ -90,7 +90,6 @@ $(document).ready(function () {
         data: { email: $("#email").val() },
         success: function (result) {
           if (result === "true") {
-            console.log("takjest");
             $("#errors-data")
               .append(`<div class="alert alert-danger" role="alert">
             The email address provided is invalid or does not exist
@@ -106,8 +105,8 @@ $(document).ready(function () {
     }
     if (!usernameGood) {
       $("#errors-data").append(`<div class="alert alert-danger" role="alert">
-    The username provided is too short or does exist
-  </div>`);
+      The username provided is too short or does exist
+      </div>`);
     }
     $("#registerModal").effect("shake");
   }
