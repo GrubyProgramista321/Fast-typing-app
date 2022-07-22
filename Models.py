@@ -1,3 +1,4 @@
+from flask_login import user_unauthorized
 from configuration import db, UserMixin
 
 class Users(db.Model, UserMixin):
@@ -10,5 +11,12 @@ class Games(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False)
     wpm = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.Date, nullable=False)
+
+class theBestGames(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String, nullable=False)
+    wpm = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.Date, nullable=False)
 
 db.create_all()

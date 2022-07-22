@@ -2,23 +2,38 @@ var opened = false; // check if window is opened (login window)
 var usernameGood;
 var emailGood;
 var Exsisted;
+function changeUrl(href) {
+  const nextURL = href;
+  const nextTitle = 'My new page title';
+  const nextState = { additionalInformation: 'Updated the URL with JS' };
+  
+  // This will create a new entry in the browser's history, without reloading
+  window.history.pushState(nextState, nextTitle, nextURL);
+  
+  // This will replace the current entry in the browser's history, without reloading
+  window.history.replaceState(nextState, nextTitle, nextURL);
+}
 // Login accout using AJAX
 $(document).ready(function () {
+  $(".login-input-div").click(function() {
+    $(this).children()[1].focus()
+  })
   $("#submit-button").click(function (e) {
     $.ajax({
       url: "/login",
       method: "POST",
-      data: { username: $("#username").val(), password: $("#password").val() },
+      data: { username: $("#username-login").val(), password: $("#password-login").val() },
       success: function (result) {
         console.log(result);
         if (result === "true") {
+          changeUrl("/")
           location.reload();
         } else {
           try {
-            $("#error").remove();
+            $(".siemaa").remove();
           } catch (error) {}
           $("#title").after(
-            `<div class="alert alert-danger" role="alert">
+            `<div class="alert alert-danger siemaa" role="alert">
             Username or password are not correct!
           </div>`
           );
@@ -26,6 +41,7 @@ $(document).ready(function () {
       },
     });
   });
+
   // -------------------------------------------------------------------------------------------
 
   // register account AJAX
@@ -54,6 +70,15 @@ $(document).ready(function () {
     }
   });
 
+  // click ENTER to submit login ----------------------------
+
+  $(".input-login").on("keydown", function (key) {
+    if (key.originalEvent.key === "Enter") {
+      $("#submit-button").click();
+    }
+  });
+  // --------------------------------------------------------
+
   //---------------------------------------------------------
 
   // button to open and close bootstrap modals (Register modals)
@@ -74,6 +99,7 @@ $(document).ready(function () {
   }
 
   function showErrors() {
+    console.log(usernameGood)
     $("#submit-reigster-button").attr("disabled", false);
     $(".bg-loader").remove();
     try {
@@ -92,7 +118,7 @@ $(document).ready(function () {
           if (result === "true") {
             $("#errors-data")
               .append(`<div class="alert alert-danger" role="alert">
-            The email address provided is invalid or does not exist
+            The email address provided is invalid or <b>does not exist</b>
           </div>`);
           } else {
             $("#errors-data")
@@ -115,7 +141,7 @@ $(document).ready(function () {
     if (usernameGood & emailGood) {
       console.log("tak bylo");
       $.ajax({
-        url: "/register",
+        url: "/register_account",
         method: "POST",
         data: {
           username: $("#username-register").val(),
@@ -124,6 +150,7 @@ $(document).ready(function () {
         },
         success: function (result) {
           if (result === "true") {
+            changeUrl("/")
             location.reload();
           } else {
             console.log("nie obchodiz mnie to");
@@ -157,17 +184,18 @@ $(document).ready(function () {
           } else {
             emailGood = false;
             showErrors();
+            console.log(usernameGood)
           }
         },
       });
     } else {
       emailGood = false;
+      console.log(usernameGood)
       showErrors();
     }
   }
 
-  function checkUsername() {
-    console.log("tak widzu");
+  function checkRegisterInputs() {
     if ($("#username-register").val().length >= 4) {
       $.ajax({
         url: "/check_username",
@@ -180,21 +208,39 @@ $(document).ready(function () {
           } else {
             usernameGood = false;
           }
+          checkEmail();
         },
       });
     } else {
       usernameGood = false;
+      checkEmail();
     }
   }
+
+
+
+  function submitUsername(boolean) {
+    if (boolean) {
+      usernameGood = true
+    }
+    else {
+      usernameGood = false
+    }
+  }
+
+
+
   function checkPassword() {
     let sings = "!@#$%^&*(){}[];'<>,.?/|+_-=";
     const specialSings = sings.split("");
     let specialSingsPoints = 0;
     let largeLettersPoints = 0;
+    let endFor = false
     if ($("#password-register").val().length >= 8) {
       for (let i = 0; i < $("#password-register").val().length; i++) {
         if (specialSings.includes($("#password-register").val()[i])) {
           specialSingsPoints++;
+
         }
         if (
           $("#password-register").val()[i] ===
@@ -202,7 +248,7 @@ $(document).ready(function () {
         ) {
           largeLettersPoints++;
         }
-      }
+      } 
     }
   }
   $("#submit-reigster-button").click(function () {
@@ -215,23 +261,26 @@ $(document).ready(function () {
     </div>
   </div>`);
     $("#submit-reigster-button").attr("disabled", true);
-    checkUsername();
-    checkEmail();
+    checkRegisterInputs();
   });
 
-  // change border width on register
-
-  // $(".register-inputs").focusin(function (e) {
-  //   let id = e.currentTarget.id;
-  //   let idOfBorder = "#border-" + id;
-  //   console.log(idOfBorder);
-  //   console.log(($(idOfBorder)[0].style.width = "100%"));
-  // });
-  // $(".register-inputs").focusout(function (e) {
-  //   console.log(e);
-  //   let id = e.currentTarget.id;
-  //   let idOfBorder = "#border-" + id;
-  //   console.log(idOfBorder);
-  //   $(idOfBorder)[0].style.width = "0%";
-  // });
+$("#dropdown-button-menu").click(function() {
+if (opened === false) {
+  changeUrl("/")
+}
+else {
+  changeUrl("/login")
+}
+})
+$("#registerLink").click(function() {
+  changeUrl("/register")
+})
+$(".exit-button").click(function(){
+  if (opened) {
+  changeUrl("/login")
+  }
+  else {
+    changeUrl("/")
+  }
+})
 });

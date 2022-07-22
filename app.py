@@ -1,5 +1,8 @@
+from flask import jsonify
+
+from flask_login import FlaskLoginClient, user_accessed
 from configuration import *
-from Models import Users, Games
+from Models import Users, Games, theBestGames
 
 
 page_wikipedia = requests.get("https://en.wikipedia.org/wiki/Most_common_words_in_English")
@@ -16,11 +19,15 @@ def index():
 @app.route("/current_user", methods=["GET"])
 def currentUser():
     if (current_user.is_authenticated):
-        return "is"
+        return "true"
     else:
-        return "none"
+        return "false"
 
-@app.route("/email_data", methods=["POST"])
+@app.route("/login") 
+def loginewq():
+    return render_template("index.html")
+
+@app.route("/email_data", methods=["POST"]) # sprawdzenie czy taki email instenieje w basie danych (ajax robiony przy wywoływaniu błędu)
 def email_data():
     email_get = request.form.get("email")
     userExist = Users.query.filter_by(email=email_get).all()
@@ -42,10 +49,10 @@ def email_valid(emailValue):
                 hasMonkey = True
                 break
         if hasMonkey:
-            validEmail = validate_email(email_get, verify=True)
-            if (validEmail):
-                userExist = Users.query.filter_by(email=email_get).all()
-                if (userExist == []):
+            userExist = Users.query.filter_by(email=email_get).all()
+            if (userExist == []):
+                validEmail = validate_email(email_get, verify=True)
+                if (validEmail):
                     return True
                 else:
                     return False
@@ -81,7 +88,7 @@ def email_ping():
         else:
             return "false"
 
-@app.route("/register", methods=['POST', 'GET'])
+@app.route("/register_account", methods=['POST', 'GET'])
 def register():
     if request.method == "POST":
         if check_username() == "true" and email_valid:
@@ -95,7 +102,6 @@ def register():
             return "true"
         else:
             return "false"
-    return render_template("register.html")
 
 @app.route("/login", methods = ["POST", "GET"])
 def login():
@@ -116,16 +122,19 @@ def logout():
     return redirect("/") 
 
        
+@app.route("/register")
+def registrerdsa():
+    return render_template("index.html")
 
 @app.route("/create_word", methods=["GET", "POST"])
 def create_word():
     tak = 300
     text_array = []
-    for i in range(tak):
-        oneWord = random.randint(0, len(words))
+    for i in range(tak) :
+        oneWord = random.randint(0, len(words) - 1)
         if (words[oneWord] != "&nbsp" or words[oneWord] != "\xa0"):
             try:
-                text_array.append(words[oneWord])
+                text_array.append(words[oneWord]) 
             except:
                 tak = tak + 1 
                 old_number = oneWord
@@ -133,6 +142,29 @@ def create_word():
             numberOFWords = numberOFWords + 1
     text = " ".join(text_array)
     return text 
+
+@app.route("/save_game", methods=["GET", "POST"])
+def save_game():
+    wp_get = request.form.get("wpm")
+    saveGame = Games(username = current_user.username, wpm = wp_get, date = datetime.datetime.now())
+    db.session.add(saveGame)
+    db.session.commit()
+    print(Games.query.all())
+    if (theBestGames.query.filter_by(username=current_user.username).all() == []):
+        saveGame = theBestGames(username = current_user.username, wpm = wp_get, date = datetime.datetime.now())
+        db.session.add(saveGame)
+        db.session.commit()
+        return jsonify(wpmtoBeat = theBestGames.query.filter_by(username=current_user.username).first().wpm, succces = True)
+    else:
+        bestGame = theBestGames.query.filter_by(username=current_user.username).first()
+        print(bestGame)
+        print(theBestGames.query.filter_by(username=current_user.username).first().wpm)
+        if (int(wp_get) > int(bestGame.wpm)):
+            update = theBestGames.query.filter_by(username=current_user.username).update({theBestGames.wpm: wp_get})
+            db.session.commit()
+            return jsonify(wpmtoBeat = theBestGames.query.filter_by(username=current_user.username).first().wpm, succces = True)
+        else:
+            return jsonify(wpmtoBeat = theBestGames.query.filter_by(username=current_user.username).first().wpm, succces = False)
 
 if __name__ == '__main__':
     app.run(debug=True)
