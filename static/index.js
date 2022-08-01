@@ -94,9 +94,7 @@ var loaded = false;
 var FirstClick = false;
 var isLoged = false;
 var lettersMissed = 0; // literki nie udane 
-
-
-
+var leaderBoardOpened = false
 // confectti 
 var maxParticleCount = 200; //set max confetti count
 var particleSpeed = 2; //set the particle animation speed
@@ -106,135 +104,135 @@ var toggleConfetti; //call to start or stop the confetti animation depending on 
 var removeConfetti; //call to stop the confetti animation and remove all confetti immediately
 var maxParticleCount = 150; //set max confetti count
 var particleSpeed = 2; //set the particle animation speed
-(function() {
-	startConfetti = startConfettiInner;
-	stopConfetti = stopConfettiInner;
-	toggleConfetti = toggleConfettiInner;
-	removeConfetti = removeConfettiInner;
-	var colors = ["DodgerBlue", "OliveDrab", "Gold", "Pink", "SlateBlue", "LightBlue", "Violet", "PaleGreen", "SteelBlue", "SandyBrown", "Chocolate", "Crimson"]
-	var streamingConfetti = false;
-	var animationTimer = null;
-	var particles = [];
-	var waveAngle = 0;
-	
-	function resetParticle(particle, width, height) {
-		particle.color = colors[(Math.random() * colors.length) | 0];
-		particle.x = Math.random() * width;
-		particle.y = Math.random() * height - height;
-		particle.diameter = Math.random() * 10 + 5;
-		particle.tilt = Math.random() * 10 - 10;
-		particle.tiltAngleIncrement = Math.random() * 0.07 + 0.05;
-		particle.tiltAngle = 0;
-		return particle;
-	}
+(function () {
+  startConfetti = startConfettiInner;
+  stopConfetti = stopConfettiInner;
+  toggleConfetti = toggleConfettiInner;
+  removeConfetti = removeConfettiInner;
+  var colors = ["DodgerBlue", "OliveDrab", "Gold", "Pink", "SlateBlue", "LightBlue", "Violet", "PaleGreen", "SteelBlue", "SandyBrown", "Chocolate", "Crimson"]
+  var streamingConfetti = false;
+  var animationTimer = null;
+  var particles = [];
+  var waveAngle = 0;
 
-	function startConfettiInner() {
-		var width = window.innerWidth;
-		var height = window.innerHeight;
-		window.requestAnimFrame = (function() {
-			return window.requestAnimationFrame ||
-				window.webkitRequestAnimationFrame ||
-				window.mozRequestAnimationFrame ||
-				window.oRequestAnimationFrame ||
-				window.msRequestAnimationFrame ||
-				function (callback) {
-					return window.setTimeout(callback, 16.6666667);
-				};
-		})();
-		var canvas = document.getElementById("confetti-canvas");
-		if (canvas === null) {
-			canvas = document.createElement("canvas");
-			canvas.setAttribute("id", "confetti-canvas");
-			canvas.setAttribute("style", "display:block;z-index:999999;pointer-events:none");
-			document.body.appendChild(canvas);
-			canvas.width = width;
-			canvas.height = height;
-			window.addEventListener("resize", function() {
-				canvas.width = window.innerWidth;
-				canvas.height = window.innerHeight;
-			}, true);
-		}
-		var context = canvas.getContext("2d");
-		while (particles.length < maxParticleCount)
-			particles.push(resetParticle({}, width, height));
-		streamingConfetti = true;
-		if (animationTimer === null) {
-			(function runAnimation() {
-				context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-				if (particles.length === 0)
-					animationTimer = null;
-				else {
-					updateParticles();
-					drawParticles(context);
-					animationTimer = requestAnimFrame(runAnimation);
-				}
-			})();
-		}
-	}
+  function resetParticle(particle, width, height) {
+    particle.color = colors[(Math.random() * colors.length) | 0];
+    particle.x = Math.random() * width;
+    particle.y = Math.random() * height - height;
+    particle.diameter = Math.random() * 10 + 5;
+    particle.tilt = Math.random() * 10 - 10;
+    particle.tiltAngleIncrement = Math.random() * 0.07 + 0.05;
+    particle.tiltAngle = 0;
+    return particle;
+  }
 
-	function stopConfettiInner() {
-		streamingConfetti = false;
-	}
+  function startConfettiInner() {
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+    window.requestAnimFrame = (function () {
+      return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function (callback) {
+          return window.setTimeout(callback, 16.6666667);
+        };
+    })();
+    var canvas = document.getElementById("confetti-canvas");
+    if (canvas === null) {
+      canvas = document.createElement("canvas");
+      canvas.setAttribute("id", "confetti-canvas");
+      canvas.setAttribute("style", "display:block;z-index:999999;pointer-events:none");
+      document.body.appendChild(canvas);
+      canvas.width = width;
+      canvas.height = height;
+      window.addEventListener("resize", function () {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }, true);
+    }
+    var context = canvas.getContext("2d");
+    while (particles.length < maxParticleCount)
+      particles.push(resetParticle({}, width, height));
+    streamingConfetti = true;
+    if (animationTimer === null) {
+      (function runAnimation() {
+        context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        if (particles.length === 0)
+          animationTimer = null;
+        else {
+          updateParticles();
+          drawParticles(context);
+          animationTimer = requestAnimFrame(runAnimation);
+        }
+      })();
+    }
+  }
 
-	function removeConfettiInner() {
-		stopConfetti();
-		particles = [];
-	}
+  function stopConfettiInner() {
+    streamingConfetti = false;
+  }
 
-	function toggleConfettiInner() {
-		if (streamingConfetti)
-			stopConfettiInner();
-		else
-			startConfettiInner();
-	}
+  function removeConfettiInner() {
+    stopConfetti();
+    particles = [];
+  }
 
-	function drawParticles(context) {
-		var particle;
-		var x;
-		for (var i = 0; i < particles.length; i++) {
-			particle = particles[i];
-			context.beginPath();
-			context.lineWidth = particle.diameter;
-			context.strokeStyle = particle.color;
-			x = particle.x + particle.tilt;
-			context.moveTo(x + particle.diameter / 2, particle.y);
-			context.lineTo(x, particle.y + particle.tilt + particle.diameter / 2);
-			context.stroke();
-		}
-	}
+  function toggleConfettiInner() {
+    if (streamingConfetti)
+      stopConfettiInner();
+    else
+      startConfettiInner();
+  }
 
-	function updateParticles() {
-		var width = window.innerWidth;
-		var height = window.innerHeight;
-		var particle;
-		waveAngle += 0.01;
-		for (var i = 0; i < particles.length; i++) {
-			particle = particles[i];
-			if (!streamingConfetti && particle.y < -15)
-				particle.y = height + 100;
-			else {
-				particle.tiltAngle += particle.tiltAngleIncrement;
-				particle.x += Math.sin(waveAngle);
-				particle.y += (Math.cos(waveAngle) + particle.diameter + particleSpeed) * 0.5;
-				particle.tilt = Math.sin(particle.tiltAngle) * 15;
-			}
-			if (particle.x > width + 20 || particle.x < -20 || particle.y > height) {
-				if (streamingConfetti && particles.length <= maxParticleCount)
-					resetParticle(particle, width, height);
-				else {
-					particles.splice(i, 1);
-					i--;
-				}
-			}
-		}
-	}
+  function drawParticles(context) {
+    var particle;
+    var x;
+    for (var i = 0; i < particles.length; i++) {
+      particle = particles[i];
+      context.beginPath();
+      context.lineWidth = particle.diameter;
+      context.strokeStyle = particle.color;
+      x = particle.x + particle.tilt;
+      context.moveTo(x + particle.diameter / 2, particle.y);
+      context.lineTo(x, particle.y + particle.tilt + particle.diameter / 2);
+      context.stroke();
+    }
+  }
+
+  function updateParticles() {
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+    var particle;
+    waveAngle += 0.01;
+    for (var i = 0; i < particles.length; i++) {
+      particle = particles[i];
+      if (!streamingConfetti && particle.y < -15)
+        particle.y = height + 100;
+      else {
+        particle.tiltAngle += particle.tiltAngleIncrement;
+        particle.x += Math.sin(waveAngle);
+        particle.y += (Math.cos(waveAngle) + particle.diameter + particleSpeed) * 0.5;
+        particle.tilt = Math.sin(particle.tiltAngle) * 15;
+      }
+      if (particle.x > width + 20 || particle.x < -20 || particle.y > height) {
+        if (streamingConfetti && particles.length <= maxParticleCount)
+          resetParticle(particle, width, height);
+        else {
+          particles.splice(i, 1);
+          i--;
+        }
+      }
+    }
+  }
 })();
 $(document).ready(function () {
   function checkLegin() {
     $.ajax({
       url: "/current_user",
       method: "GET",
-      success: function(result) {
+      success: function (result) {
         if (result !== "false") {
           isLoged = true
         }
@@ -242,7 +240,7 @@ $(document).ready(function () {
       }
     })
   }
- function createWord() {
+  function createWord() {
     $.ajax({
       url: "/create_word",
       success: function (result) {
@@ -275,15 +273,15 @@ $(document).ready(function () {
     howmanyScroll = document.getElementById("word-inner").scrollTop;
     if (
       document.getElementById("word-inner").getBoundingClientRect().top +
-        oneOfthird +
-        58 <
+      oneOfthird +
+      58 <
       $(".word")[indexOfWord].getBoundingClientRect().top
     ) {
       document.getElementById("word-inner").scrollTop = howmanyScroll + oneLine;
     }
     if (
       document.getElementById("word-inner").getBoundingClientRect().top +
-        oneOfthird >
+      oneOfthird >
       $(".word")[indexOfWord].getBoundingClientRect().top
     ) {
       document.getElementById("word-inner").scrollTop = howmanyScroll - oneLine;
@@ -305,56 +303,24 @@ $(document).ready(function () {
   }
 
 
-  
+
   function endOfGame() {
     $("#text-keyboard").blur()
-    $(
-      "body"
-    ).append(`<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="results">
-                            <div class="wpm-style-div"><span class="wpm-style-text">WPM</span><span class="WPN-result-style">${numberOFWords().toString()}</span></div>
-                            <div class="goodword/badwords">
-                                <h4>Good / All</h4>
-                                <h5>${
-                                  GoodWordsVsBadWords().GoodWordsCounter
-                                } / ${GoodWordsVsBadWords().allWords}</h5>
-                            </div>
-                            <div class="allLettersyouWriten">
-                                <h4>All letters you wrote </h4>
-                                <h5>${WrittenLetters} </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-            </div>
-        </div>`);
-    // $("#exampleModal").modal("show");
     $(".app").fadeOut(200)
     $(".blinkingCurrsor").fadeOut(200)
-    setTimeout(function() {
+    setTimeout(function () {
       $(".app").hide()
       $(".game-div").append(`<div class="end-screen" id="end-screen">
         <div class="results" id="results"><h1 class="words-per-minute-result">WPM ${numberOFWords().toString()}</h1></div>
       </div>
-      <canvas id="confetti-canvas" style="display:block;z-index:999999;pointer-events:none" width="2540" height="1815"></canvas>`) 
+      <canvas id="confetti-canvas" style="display:block;z-index:999999;pointer-events:none" width="2540" height="1815"></canvas>`)
       $("#end-screen").fadeIn(200)
       saveWpm();
       startConfetti()
-      setTimeout(function() {
+      setTimeout(function () {
         stopConfetti()
-      },3000)
-    },250)
+      }, 3000)
+    }, 250)
   }
 
 
@@ -371,7 +337,7 @@ $(document).ready(function () {
     }
   }
 
-  
+
   function addLettersColored(userInput) {
     let fajnie = userInput.substring(currnetWord2o().length);
     lettersMissed++
@@ -540,7 +506,7 @@ $(document).ready(function () {
         );
         $(".blinkingCurrsor").css("rigth", currnetLetterRight);
       }
-    } catch (error) {}
+    } catch (error) { }
   }
 
 
@@ -607,13 +573,13 @@ $(document).ready(function () {
       if (
         $(".word")[indexOfWord - 1].ariaSiema != "correct" &&
         $(".word")[indexOfWord - 1].getBoundingClientRect().top + 10 > // check if prvious word is on our screen and if it is not correct
-          $("#word-inner")[0].getBoundingClientRect().top
+        $("#word-inner")[0].getBoundingClientRect().top
       ) {
         return true;
       } else {
         return false;
       }
-    } catch (error) {}
+    } catch (error) { }
   }
 
 
@@ -624,7 +590,7 @@ $(document).ready(function () {
     var childrenElements = parent.querySelectorAll(".additional-letters");
     try {
       $(childrenElements).remove();
-    } catch (error) {}
+    } catch (error) { }
     currnetWordColor = currnetWord;
     for (let i = 0; i < word.length; i++) {
       if (valueUser[i] == currnetWord[i]) {
@@ -685,9 +651,8 @@ $(document).ready(function () {
       for (var x = 0; x < $(".word").length; x++) {
         let siemaaaa = "";
         for (let i = 0; i < $(".word")[x].innerHTML.length; i++) {
-          siemaaaa += `<letter class="letters">${
-            $(".word")[x].innerHTML[i]
-          }</letter>`;
+          siemaaaa += `<letter class="letters">${$(".word")[x].innerHTML[i]
+            }</letter>`;
         }
         $(".word")[x].innerHTML = siemaaaa;
       }
@@ -708,9 +673,8 @@ $(document).ready(function () {
         if ($(".word")[x].id === "additional-word") {
           let lettersPodzielone = "";
           for (let i = 0; i < $(".word")[x].innerHTML.length; i++) {
-            lettersPodzielone += `<letter class="letters">${
-              $(".word")[x].innerHTML[i]
-            }</letter>`;
+            lettersPodzielone += `<letter class="letters">${$(".word")[x].innerHTML[i]
+              }</letter>`;
           }
           $(".word")[x].id = "word";
           $(".word")[x].innerHTML = lettersPodzielone;
@@ -744,33 +708,33 @@ $(document).ready(function () {
       <div class="timer-bar"></div>
     </div>
   `)
-      $(".toast-login").toast("show")
+    $(".toast-login").toast("show")
+    $(".toast-login").animate({
+      top: "6.5%"
+    })
+    $(".timer-bar").animate({
+      width: "96.5%"
+    }, 3000)
+    changeUrl("/")
+    setTimeout(function () {
       $(".toast-login").animate({
-        top: "6.5%"
+        top: "-10%"
       })
-      $(".timer-bar").animate({
-        width: "96.5%"
-      },3000)
-      changeUrl("/")
-      setTimeout(function() {
-        $(".toast-login").animate({
-          top: "-10%"
-        })
-        setTimeout(function() {
-          $(".toast-login").remove()
-        },500)
-      },3000)
+      setTimeout(function () {
+        $(".toast-login").remove()
+      }, 500)
+    }, 3000)
   }
   function changeUrl(href) {
     const nextURL = href;
-    
+
     // This will replace the current entry in the browser's history, without reloading
     window.history.replaceState("", "", nextURL);
   }
 
 
   function checkURLlogin() {
-    if (window.location.href.indexOf("login") > -1 ) {
+    if (window.location.href.indexOf("login") > -1) {
       if (isLoged === false) {
         console.log("tak")
         $(".dropdown-menu-non-bootstrap").fadeIn(175);
@@ -780,28 +744,64 @@ $(document).ready(function () {
       else {
         console.log("taktak")
         currentUserIsLogedError()
+      }
+    }
+    else if (window.location.href.indexOf("register") > -1) {
+      if (isLoged === false) {
+        $("#registerModal").modal("show")
+      }
+      else {
+        currentUserIsLogedError()
+      }
     }
   }
-  else if (window.location.href.indexOf("register") > -1) {
-    if (isLoged === false) {
-      $("#registerModal").modal("show")
-    }
-    else {
-      currentUserIsLogedError()
-    }
+
+
+
+  function leaderBoard() {
+    $("body").append(`  <div class="modal fade" id="leaderboard-modal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body" id="leaderboard-body">
+        <span class="loader">Loading</span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>`)
+    $("#leaderboard-modal").modal("show")
+    let userPlacement;
+    $.ajax({
+      url: "/leaderboard",
+      success: function (result) {
+        $(".loader").remove()
+        let rank = 0;
+        let gamesIntoHTML = '';
+        for (let i = 0; i < result.length; i++) {
+          gamesIntoHTML = gamesIntoHTML.concat(`<div class="bestGame" id="bestGame-${rank}"><div class="leaderboard-information"><h5 class="leaderboard-placement">${i + 1}</h5><h1 class="user">${result[i].username}</h1></div><h2 class="wpm-user">${result[i].wpm}</h2></div>`)
+        }
+        $("#leaderboard-body").append(gamesIntoHTML)
+      }
+    })
+    $("#leaderboard-modal").on("hidden.bs.modal", function () { // tell bootstrap modal when hidden animations end
+      $("#leaderboard-modal").remove()
+    })
   }
-}
-
-// --------------------------------------------------
 
 
 
 
 
 
-
-
-// APPLICATION  --------------------------------------------------
+  // APPLICATION  --------------------------------------------------
 
 
 
@@ -811,12 +811,12 @@ $(document).ready(function () {
 
 
 
-$("#word-inner").hide();
-createWord();
-checkLegin()
-// setTimeout(function() {
-//     checkURLlogin()
-//   },30)
+  $("#word-inner").hide();
+  createWord();
+  checkLegin()
+  // setTimeout(function() {
+  //     checkURLlogin()
+  //   },30)
   $(".keys").click(function () {
     // $("#text-keyboard").focus();
     if (!FirstClick) {
@@ -829,8 +829,8 @@ checkLegin()
       if ($(this).val() == "Backspace") {
         let lastletter = $("#text-keyboard")[0].value.substring(
           $("#text-keyboard")[0].value.length - 1
-          );
-          let costam = $("#text-keyboard")[0].value.replace(lastletter, "");
+        );
+        let costam = $("#text-keyboard")[0].value.replace(lastletter, "");
         $("#text-keyboard")[0].value = costam;
       }
       if ($(this).val() == "shift") {
@@ -867,51 +867,51 @@ checkLegin()
   var howmanyScroll = 0;
   function scrollDownText(firstWord, SecondWord) {
     var wordds =
-    document.getElementById("word-ds").getBoundingClientRect().top +
-    document.getElementById("word-ds").getBoundingClientRect().height / 2;
+      document.getElementById("word-ds").getBoundingClientRect().top +
+      document.getElementById("word-ds").getBoundingClientRect().height / 2;
     if (
       document
-      .getElementsByClassName("word")
+        .getElementsByClassName("word")
       [indexOfWord + 1].getBoundingClientRect().top > wordds
+    ) {
+      howmanyScroll = document.getElementById("word-inner").scrollTop;
+      document.getElementById("word-inner").scrollTo(0, howmanyScroll + 56);
+      $(".word")[indexOfWord].ariaCanBackspace = "nie";
+    }
+    console.log("line: ", line);
+  }
+  for (let i = 0; i < $(".keys").length; i++) {
+    listOfLetters.push($(".keys")[i]);
+  }
+  $(document).on("keydown", function (e) {
+    // press key
+    for (var i = 0; i < $(".letter").length; i++) {
+      $(".letter")[i].style.color = "black";
+    }
+    if (e.key == "Enter") {
+      e.preventDefault();
+    }
+    for (var i = 0; i < listOfLetters.length; i++) {
+      if (
+        listOfLetters[i].value == e.key ||
+        listOfLetters[i].value.toUpperCase() == e.key.toUpperCase()
       ) {
-        howmanyScroll = document.getElementById("word-inner").scrollTop;
-        document.getElementById("word-inner").scrollTo(0, howmanyScroll + 56);
-        $(".word")[indexOfWord].ariaCanBackspace = "nie";
-      }
-      console.log("line: ", line);
-    }
-    for (let i = 0; i < $(".keys").length; i++) {
-      listOfLetters.push($(".keys")[i]);
-    }
-    $(document).on("keydown", function (e) {
-      // press key
-      for (var i = 0; i < $(".letter").length; i++) {
-        $(".letter")[i].style.color = "black";
-      }
-      if (e.key == "Enter") {
-        e.preventDefault();
-      }
-      for (var i = 0; i < listOfLetters.length; i++) {
-        if (
-          listOfLetters[i].value == e.key ||
-          listOfLetters[i].value.toUpperCase() == e.key.toUpperCase()
-          ) {
         listOfLetters[i].style.backgroundColor = "green";
       }
     }
   });
-  
+
   $(document).on("keyup", function (e) {
     for (var i = 0; i < listOfLetters.length; i++) {
       if (
         listOfLetters[i].value == e.key ||
         listOfLetters[i].value.toUpperCase() == e.key.toUpperCase()
-        ) {
-          listOfLetters[i].style.backgroundColor = "white";
-        }
+      ) {
+        listOfLetters[i].style.backgroundColor = "white";
       }
+    }
   });
-  
+
   var seconds = time;
   niewiem = seconds;
   var secondsHTML = $("#seconds");
@@ -934,8 +934,8 @@ checkLegin()
     }
   } else {
     minutesHTML.html("0");
-    if (seconds < 10 ) {
-    secondsHTML.html("0" + seconds);
+    if (seconds < 10) {
+      secondsHTML.html("0" + seconds);
     }
     else {
       secondsHTML.html(seconds)
@@ -951,12 +951,12 @@ checkLegin()
       $(".word")[indexOfWord].getBoundingClientRect().top != poprzednitop &&
       poprzednitop != undefined &&
       document.getElementById("text-keyboard").value.length != 1
-      ) {
-        console.log("oj tak tak jest inny");
-        console.log(document.getElementById("text-keyboard").value.slice(0, -1));
+    ) {
+      console.log("oj tak tak jest inny");
+      console.log(document.getElementById("text-keyboard").value.slice(0, -1));
       document.getElementById("text-keyboard").value = document
-      .getElementById("text-keyboard")
-      .value.slice(0, -1);
+        .getElementById("text-keyboard")
+        .value.slice(0, -1);
       checkAllWords();
       checkWord($("#text-keyboard").val().toLowerCase(), currnetWord2o());
       showCurrsorBlinking($("#text-keyboard").val());
@@ -976,7 +976,7 @@ checkLegin()
     if (!loaded) {
       $("#text-keyboard").val("");
     }
-    if (loaded) {
+    else {
       Working = false;
       $(".blinkingCurrsor").css("opacity", 1);
       clearInterval(fajnie);
@@ -1034,6 +1034,16 @@ checkLegin()
     // $("#text-keyboard").focus();
     showCurrsorBlinking($("#text-keyboard").val());
   });
+
+  $("#leaderboard-button").click(function () {
+    if (!leaderBoardOpened) {
+      leaderBoardOpened = true
+    }
+    else {
+      leaderBoardOpened = false
+    }
+    leaderBoard()
+  })
 });
 
-console.clear()
+// console.clear()

@@ -11,25 +11,30 @@ body {
   opacity: 0;
   position: absolute;
 }
+
 .header {
-  height: 5%;
+  height: 5vh;
   padding: 20px;
   display: flex;
   justify-content: space-between;
 }
+
 .app {
   display: flex;
 }
+
 .game-div {
   /* display: flex; */
   height: 100%;
   width: 100%;
   position: relative;
 }
+
 .hideCursor {
   opacity: 0;
   border-bottom-left-radius: 0;
 }
+
 .user-profile-mini {
   transition: all 0.2s;
   width: 200px;
@@ -43,16 +48,20 @@ body {
   background-color: #0d153c;
   position: relative;
 }
+
 .toast-body {
-  font-size:30px ;
+  font-size: 30px;
   background-color: #f8d7da;
-} 
-.text-primary {
-  color: black!important;
 }
+
+.text-primary {
+  color: black !important;
+}
+
 .dropdown {
   margin-top: 10px;
 }
+
 .toast-login {
   display: none;
   padding: 10px;
@@ -65,21 +74,25 @@ body {
   transform: translate(-50%, -50%);
   display: flex;
 }
+
 .timer-bar {
   border-radius: 100px;
   position: absolute;
   top: 92%;
-  left:9px;
+  left: 9px;
   height: 3px;
   width: 0%;
   background-color: #fa6262;
 }
+
 .error-title {
   font-size: 22px;
 }
+
 .error-details {
-  font-size:15px
+  font-size: 15px
 }
+
 .error-icon-register {
   display: flex;
   align-items: center;
@@ -87,28 +100,34 @@ body {
   font-size: 30px;
   margin-right: 10px;
 }
+
 .toast-header {
   background-color: #f8d7da;
   color: black;
 }
+
 .user-profile-mini-123 {
   width: 300px;
   border-radius: 10px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
 }
+
 .user-profile-image {
   height: 35px;
   width: 35px;
   border-radius: 100%;
 }
+
 i {
   color: white;
 }
+
 .username-info {
   color: white;
   text-align: center;
 }
+
 .user-profile-stats {
   position: absolute;
   background-color: #0d153c;
@@ -119,23 +138,35 @@ i {
   transition: height 0.2s;
   width: inherit;
 }
+
 .stats {
   display: none;
   transition: 0.1s all;
 }
+
 .statsFajnie {
   display: block;
 }
+
 .user-profile-stats-123 {
   height: 300px;
   padding: 10px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
+
+.user {
+  font-size: 25px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+}
+
 .input-label {
   padding: 10px;
   color: white;
 }
+
 .wpm-style-div {
   width: fit-content;
   display: flex;
@@ -143,21 +174,27 @@ i {
   align-items: center;
   flex-direction: column;
 }
+
 .logo {
   color: white;
 }
+
 .modal-content {
   width: 600px;
   border-radius: 10px;
   position: relative;
+  z-index: 100;
   background-color: #1d1e22;
 }
+
 .modal-header {
   border: none;
 }
+
 .modal-footer {
   border: none;
 }
+
 .bg-loader {
   height: 100%;
   position: absolute;
@@ -168,55 +205,70 @@ i {
   width: inherit;
   background-color: rgba(20, 20, 20, 0.623);
 }
+
 #title {
   margin-top: 10px;
 }
+
+.navigation-bar-non-bootstrap {
+  display: flex;
+}
+
 .blinkingCurrsor {
   width: 2px;
   opacity: 1;
-  height: 40px;
+  height: 33px;
   background-color: rgb(255, 123, 0);
   position: absolute;
   transition: all 0.05s;
 }
+
 .end-screen {
-  height:95%;
+  height: 95%;
   background-color: white;
   width: 100%;
   display: none;
   position: relative;
   z-index: 10;
 }
+
 .form-register {
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
   align-items: center;
 }
+
 #clock {
   display: flex;
 }
+
 #results {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 .form {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
 }
+
 .img-logo {
   height: 100px;
 }
+
 .additional-letters {
   color: rgb(138, 0, 0);
 }
+
 .alert {
   margin-top: 1em;
 }
+
 .keys:active {
   background-color: green;
 }
@@ -229,9 +281,11 @@ i {
   width: 40px;
   color: rgb(114, 114, 114);
 }
+
 .clock {
   color: white;
 }
+
 #word-inner {
   /* text-align: center; */
   font-size: 30px;
@@ -251,12 +305,15 @@ i {
   position: relative;
   height: inherit;
 }
+
 .col-sm- {
   height: inherit;
 }
+
 .row {
   height: 100%;
 }
+
 .word-ds {
   display: flex;
   width: 100%;
@@ -267,18 +324,68 @@ i {
   position: absolute;
   top: 50%;
   left: 50%;
-  z-index: 100000;
+  z-index: 1;
   margin-top: 30px;
   margin-bottom: 30px;
   transform: translate(-50%, -50%);
   /* pointer-events: none; */
 }
+
 .fajnie {
   color: white;
 }
+
+h2 {
+  margin-bottom: 0;
+}
+
 .word-ds::-webkit-scrollbar {
   color: black;
   width: 0px;
+}
+
+.bestGame {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+  color: white;
+  background-color: #393e42;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.bestGame:nth-child(1) .leaderboard-information .leaderboard-placement {
+  border-radius: 100%;
+  background-color: gold !important;
+  border: 5px solid rgb(255, 255, 161);
+}
+
+.bestGame:nth-child(2) .leaderboard-information .leaderboard-placement {
+  border-radius: 100%;
+  background-color: silver !important;
+  border: 5px solid rgb(233, 233, 233);
+}
+
+.bestGame:nth-child(3) .leaderboard-information .leaderboard-placement {
+  border-radius: 100%;
+  background-color: rgb(223, 18, 18) !important;
+  border: 5px solid rgb(182, 87, 87);
+}
+
+.leaderboard-placement {
+  margin-right: 10px;
+  margin-bottom: 0px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  background-color: transparent !important;
+}
+
+.leaderboard-information {
+  display: flex;
 }
 
 .keys {
@@ -304,12 +411,14 @@ i {
 .caps {
   width: auto;
 }
+
 .under-textarea-div {
   position: absolute;
   bottom: -5%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 .enter {
   width: 170px;
 }
@@ -322,6 +431,7 @@ i {
 .tab {
   width: 150px;
 }
+
 .lds-spinner {
   color: official;
   display: inline-block;
@@ -329,10 +439,12 @@ i {
   width: 80px;
   height: 80px;
 }
+
 .lds-spinner div {
   transform-origin: 40px 40px;
   animation: lds-spinner 1.2s linear infinite;
 }
+
 .lds-spinner div:after {
   content: " ";
   display: block;
@@ -344,65 +456,81 @@ i {
   border-radius: 20%;
   background: #fff;
 }
+
 .lds-spinner div:nth-child(1) {
   transform: rotate(0deg);
   animation-delay: -1.1s;
 }
+
 .lds-spinner div:nth-child(2) {
   transform: rotate(30deg);
   animation-delay: -1s;
 }
+
 .lds-spinner div:nth-child(3) {
   transform: rotate(60deg);
   animation-delay: -0.9s;
 }
+
 .lds-spinner div:nth-child(4) {
   transform: rotate(90deg);
   animation-delay: -0.8s;
 }
+
 .lds-spinner div:nth-child(5) {
   transform: rotate(120deg);
   animation-delay: -0.7s;
 }
+
 .lds-spinner div:nth-child(6) {
   transform: rotate(150deg);
   animation-delay: -0.6s;
 }
+
 .lds-spinner div:nth-child(7) {
   transform: rotate(180deg);
   animation-delay: -0.5s;
 }
+
 .lds-spinner div:nth-child(8) {
   transform: rotate(210deg);
   animation-delay: -0.4s;
 }
+
 .lds-spinner div:nth-child(9) {
   transform: rotate(240deg);
   animation-delay: -0.3s;
 }
+
 .lds-spinner div:nth-child(10) {
   transform: rotate(270deg);
   animation-delay: -0.2s;
 }
+
 .lds-spinner div:nth-child(11) {
   transform: rotate(300deg);
   animation-delay: -0.1s;
 }
+
 .lds-spinner div:nth-child(12) {
   transform: rotate(330deg);
   animation-delay: 0s;
 }
+
 @keyframes lds-spinner {
   0% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
   }
 }
+
 body {
   background-color: #17181a;
 }
+
 .dropdown-menu-non-bootstrap {
   display: none;
   width: 400px;
@@ -420,40 +548,50 @@ body {
   /* height: 100px; */
   /* display: block; */
 }
+
 .dropdown {
   position: relative;
 }
+
 .login-form {
   display: none;
 }
+
 #registerLink {
   padding: 0;
   color: #4858b0;
   background-color: transparent;
   border: none;
 }
+
 #submit-button:hover {
   background-color: #1468cc;
 }
-.register-inputs, .login-input {
+
+.register-inputs,
+.login-input {
   border: none;
   width: 100%;
   background-color: transparent;
   color: white;
 }
+
 .exit-button {
   background-color: transparent;
   padding: 10px;
   border: none;
 }
+
 .exit-button i {
   color: red;
   font-size: 20px;
 }
+
 .blue-terms {
   color: blue;
   font-weight: 900;
 }
+
 .login-input-div {
   width: 100%;
   padding: 10px;
@@ -462,6 +600,7 @@ body {
   display: flex;
   margin-bottom: 20px;
 }
+
 .register-input-div {
   width: 80%;
   padding: 10px;
@@ -470,18 +609,24 @@ body {
   display: flex;
   margin-bottom: 20px;
 }
+
 #submit-reigster-button {
   margin-top: 20px;
   width: 80%;
   background-color: #5168f4;
 }
-.register-inputs:focus, .login-input:focus {
+
+.register-inputs:focus,
+.login-input:focus {
   border: none;
   outline: none;
 }
-.register-inputs::placeholder, .login-input::placeholder {
+
+.register-inputs::placeholder,
+.login-input::placeholder {
   color: #949494;
 }
+
 .icon-register {
   padding-right: 10px;
   display: flex;
@@ -489,15 +634,18 @@ body {
   font-size: 20px;
   color: #88898c;
 }
+
 .reigster-checkbox-input {
   display: flex;
   width: 75%;
   /* align-items: center; */
 }
+
 .tak,
 .tou-text {
   width: fit-content;
 }
+
 .tou-text {
   color: white;
   font-size: 15px;
@@ -506,15 +654,18 @@ body {
   display: flex;
   align-items: center;
 }
+
 .tak:checked,
 .tak::-ms-check {
   background-color: #5268f3;
   color: white;
 }
+
 .tak {
   height: 25px;
   width: 25px;
 }
+
 .border-nder-input {
   height: 3px;
   background-color: rgb(255, 255, 255);
@@ -523,12 +674,14 @@ body {
   justify-content: center;
   border: none;
 }
+
 .width-border {
   height: 4px;
   background-color: blue;
   transition: all 0.3s;
   width: 0%;
 }
+
 .form {
   display: flex;
   align-items: center;
@@ -536,10 +689,14 @@ body {
   flex-direction: column;
   width: 80%;
 }
+
 .input-login::placeholder {
   color: rgba(255, 255, 255, 0.473);
 }
-#dropdown-button-menu {
+
+#dropdown-button-menu,
+.leaderboard-button {
+  color: white;
   font-size: 20px;
   width: 40px;
   height: 40px;
@@ -549,9 +706,11 @@ body {
   /* width: max-content; */
   border: none;
 }
+
 #dropdown-button-menu i {
   color: white;
 }
+
 /* .input-login:focus {
   outline: 1px solid #1662c5;
   border: 2px solid #1662c5;
@@ -589,6 +748,7 @@ body {
   color: white;
   font-weight: bolder;
 }
+
 #confetti-canvas {
   position: absolute;
   top: 50px;
